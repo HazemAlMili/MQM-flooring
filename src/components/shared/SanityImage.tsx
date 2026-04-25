@@ -35,9 +35,18 @@ export default function SanityImage({
   const w = width || (fill ? undefined : image.asset.metadata?.dimensions?.width)
   const h = height || (fill ? undefined : image.asset.metadata?.dimensions?.height)
 
+  // Handle dummy images or direct URLs
+  let src = ""
+  try {
+    src = image.asset.url || urlFor(image).url()
+  } catch (err) {
+    // If urlFor fails (e.g. dummy ref), use the URL if present, or a safe fallback
+    src = image.asset.url || "/og-default.jpg"
+  }
+
   return (
     <Image
-      src={urlFor(image).url()}
+      src={src}
       alt={finalAlt}
       fill={fill}
       width={w}

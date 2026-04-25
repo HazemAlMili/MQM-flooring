@@ -1,37 +1,37 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
-import Link from "next/link"
-import { usePathname } from "next/navigation"
-import { motion } from "framer-motion"
-import { Menu, FileText, ExternalLink } from "lucide-react"
-import { SiteSettings } from "@/types/sanity"
-import { urlFor } from "@/sanity/lib/image"
-import MobileMenu from "./MobileMenu"
+import { useState, useEffect } from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { motion } from "framer-motion";
+import { Menu, FileText, ExternalLink } from "lucide-react";
+import { SiteSettings } from "@/types/sanity";
+import { urlFor } from "@/sanity/lib/image";
+import MobileMenu from "./MobileMenu";
+import Image from "next/image";
 
 interface NavClientProps {
-  settings: SiteSettings | null
+  settings: SiteSettings | null;
 }
 
 const navLinks = [
-  { name: "Home",     href: "/" },
-  { name: "About",    href: "/about" },
+  { name: "Home", href: "/" },
   { name: "Services", href: "/services" },
   { name: "Projects", href: "/projects" },
-  { name: "Careers",  href: "/careers" },
-  { name: "Contact",  href: "/contact" },
-]
+  { name: "Careers", href: "/careers" },
+  { name: "Contact", href: "/contact" },
+];
 
 export default function NavClient({ settings }: NavClientProps) {
-  const [isScrolled, setIsScrolled]       = useState(false)
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
-  const pathname = usePathname()
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const pathname = usePathname();
 
   useEffect(() => {
-    const handleScroll = () => setIsScrolled(window.scrollY > 80)
-    window.addEventListener("scroll", handleScroll, { passive: true })
-    return () => window.removeEventListener("scroll", handleScroll)
-  }, [])
+    const handleScroll = () => setIsScrolled(window.scrollY > 80);
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   return (
     <>
@@ -39,14 +39,19 @@ export default function NavClient({ settings }: NavClientProps) {
         initial={{ y: -20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-        className={`fixed top-0 left-0 right-0 z-40 bg-white transition-all duration-300 ${
-          isScrolled ? "shadow-sm border-b border-border" : "border-b border-border"
+        className={`fixed top-0 left-0 right-0 z-40 transition-all duration-500 ${
+          isScrolled
+            ? "bg-white/90 backdrop-blur-md shadow-md py-0"
+            : "bg-white py-2"
         }`}
       >
         {/* ── Top utility bar ── */}
         {(settings?.sisterCompanyUrl || settings?.companyProfilePdfUrl) && (
-          <div className="bg-primary text-white text-xs">
-            <div className="container mx-auto px-4 md:px-6 h-8 flex items-center justify-end gap-4">
+          <motion.div 
+            animate={{ height: isScrolled ? 0 : 32, opacity: isScrolled ? 0 : 1 }}
+            className="bg-primary text-white text-xs overflow-hidden"
+          >
+            <div className="container mx-auto px-4 md:px-6 h-8 flex items-center justify-end gap-4 text-[10px] md:text-xs">
               {settings.sisterCompanyUrl && settings.sisterCompanyName && (
                 <a
                   href={settings.sisterCompanyUrl}
@@ -70,25 +75,30 @@ export default function NavClient({ settings }: NavClientProps) {
                 </a>
               )}
             </div>
-          </div>
+          </motion.div>
         )}
 
         {/* ── Main nav bar ── */}
-        <div className="container mx-auto px-4 md:px-6 h-16 flex items-center justify-between">
+        <div 
+          className={`container mx-auto px-4 md:px-6 flex items-center justify-between transition-all duration-500 ${
+            isScrolled ? "h-20" : "h-28"
+          }`}
+        >
           {/* Logo */}
-          <Link href="/" className="relative z-50 flex items-center gap-2 shrink-0">
-            {settings?.logo ? (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img
-                src={urlFor(settings.logo).width(200).url()}
-                alt={settings.siteName || "Maqam Al-Emaar"}
-                className="h-9 w-auto object-contain"
-              />
-            ) : (
-              <span className="text-lg font-bold text-primary" style={{ fontFamily: "var(--font-display)" }}>
-                {settings?.siteName || "مقام الإعمار"}
-              </span>
-            )}
+          <Link
+            href="/"
+            className="relative z-50 flex items-center gap-2 shrink-0 transition-transform hover:scale-105 duration-300"
+          >
+            <Image
+              src="/logo2.svg"
+              alt="Maqam Al-Emaar Logo"
+              width={180}
+              height={80}
+              className={`transition-all duration-500 w-auto ${
+                isScrolled ? "h-14" : "h-20"
+              }`}
+              priority
+            />
           </Link>
 
           {/* Desktop nav links */}
@@ -96,7 +106,7 @@ export default function NavClient({ settings }: NavClientProps) {
             {navLinks.map((link) => {
               const isActive =
                 pathname === link.href ||
-                (link.href !== "/" && pathname.startsWith(link.href))
+                (link.href !== "/" && pathname.startsWith(link.href));
               return (
                 <Link
                   key={link.href}
@@ -115,7 +125,7 @@ export default function NavClient({ settings }: NavClientProps) {
                     />
                   )}
                 </Link>
-              )
+              );
             })}
           </nav>
 
@@ -147,5 +157,5 @@ export default function NavClient({ settings }: NavClientProps) {
         settings={settings}
       />
     </>
-  )
+  );
 }

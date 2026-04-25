@@ -31,15 +31,12 @@ export default async function ContactPage() {
         breadcrumb="Get in Touch"
       />
 
-      <section className="py-20 md:py-32 bg-primary-wash relative overflow-hidden">
-        {/* Decorative background shape */}
-        <div className="absolute top-0 right-0 w-1/2 h-full bg-white hidden lg:block rounded-l-3xl shadow-sm" />
-
-        <div className="container mx-auto px-4 md:px-6 relative z-10">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-0 bg-white lg:bg-transparent rounded-2xl lg:rounded-none overflow-hidden lg:overflow-visible shadow-card lg:shadow-none">
+      <section className="py-20 md:py-32 bg-primary-wash">
+        <div className="container mx-auto px-4 md:px-6">
+          <div className="grid grid-cols-1 lg:grid-cols-12 bg-white rounded-2xl overflow-hidden shadow-card-hover border border-border">
             
             {/* Left panel: Info */}
-            <div className="lg:col-span-5 bg-primary p-10 md:p-14 lg:rounded-2xl text-white relative overflow-hidden lg:shadow-card-hover z-20">
+            <div className="lg:col-span-5 bg-primary p-10 md:p-14 text-white relative overflow-hidden">
               {/* Decorative shapes */}
               <div aria-hidden="true" className="absolute -bottom-24 -right-24 w-64 h-64 bg-white/5 rounded-full blur-3xl" />
               <div aria-hidden="true" className="absolute top-12 -left-12 w-32 h-32 bg-white/10 rounded-full blur-2xl" />
@@ -108,7 +105,7 @@ export default async function ContactPage() {
             </div>
 
             {/* Right panel: Form */}
-            <div className="lg:col-span-7 lg:pl-16 p-8 lg:p-12 lg:py-16">
+            <div className="lg:col-span-7 bg-white p-8 md:p-12 lg:p-16">
               <AnimatedSection delay={0.2}>
                 <ContactForm />
               </AnimatedSection>

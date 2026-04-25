@@ -26,32 +26,41 @@ export default function ProjectHero({ project }: ProjectHeroProps) {
             alt={project.title}
             fill
             priority
-            className="object-cover"
+            className="object-cover scale-110"
             sizes="100vw"
           />
         ) : (
-          <div className="absolute inset-0 bg-surface" />
+          <div className="absolute inset-0 bg-secondary" />
         )}
       </motion.div>
 
-      {/* Blue-tinted gradient overlay */}
-      <div className="absolute inset-0 bg-gradient-to-t from-primary/70 via-primary/20 to-transparent" />
+      {/* Modern Gradient Overlay */}
+      <div className="absolute inset-0 bg-gradient-to-t from-foreground/80 via-foreground/20 to-transparent" />
+      <div className="absolute inset-0 bg-primary/10 mix-blend-multiply" />
 
       {/* Content */}
-      <div className="relative z-10 container mx-auto px-4 md:px-6 pb-12 md:pb-16">
+      <div className="relative z-10 container mx-auto px-4 md:px-6 pb-16 md:pb-24">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-          className="max-w-3xl"
+          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+          className="max-w-4xl"
         >
           {project.serviceCategory?.title && (
-            <span className="inline-block bg-white text-primary text-xs font-medium px-3 py-1 rounded-full mb-5">
-              {project.serviceCategory.title}
-            </span>
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.2, duration: 0.6 }}
+              className="flex items-center gap-3 mb-6"
+            >
+              <span className="bg-primary text-white text-[10px] font-bold tracking-[0.3em] uppercase px-4 py-2 rounded-full shadow-lg">
+                {project.serviceCategory.title}
+              </span>
+              <div className="h-px w-12 bg-white/30" />
+            </motion.div>
           )}
           <h1
-            className="text-4xl md:text-6xl font-bold text-white"
+            className="text-5xl md:text-7xl lg:text-8xl font-extrabold text-white leading-tight"
             style={{ fontFamily: "var(--font-display)" }}
           >
             {project.title}

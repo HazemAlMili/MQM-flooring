@@ -1,135 +1,174 @@
 import Link from "next/link"
 import { client } from "@/sanity/lib/client"
-import { siteSettingsQuery } from "@/sanity/lib/queries"
-import { SiteSettings } from "@/types/sanity"
-import { urlFor } from "@/sanity/lib/image"
+import { siteSettingsQuery, allServicesQuery } from "@/sanity/lib/queries"
+import { SiteSettings, ServiceCategory } from "@/types/sanity"
 import { MapPin, Phone, Mail } from "lucide-react"
+import Image from "next/image"
 
 export default async function Footer() {
-  const settings = await client.fetch<SiteSettings>(siteSettingsQuery)
+  const [settings, services] = await Promise.all([
+    client.fetch<SiteSettings>(siteSettingsQuery),
+    client.fetch<ServiceCategory[]>(allServicesQuery),
+  ])
 
   const navLinks = [
-    { name: "Home",     href: "/" },
-    { name: "About Us", href: "/about" },
+    { name: "Home", href: "/" },
     { name: "Services", href: "/services" },
     { name: "Projects", href: "/projects" },
-    { name: "Careers",  href: "/careers" },
-    { name: "Contact",  href: "/contact" },
+    { name: "Careers", href: "/careers" },
+    { name: "Contact", href: "/contact" },
   ]
 
+  const fallbackServices = [
+    { _id: '1', title: 'Interior Fit-out', slug: 'fit-out' },
+    { _id: '2', title: 'General Construction', slug: 'construction' },
+    { _id: '3', title: 'Flooring Solutions', slug: 'flooring' },
+    { _id: '4', title: 'Project Management', slug: 'management' },
+    { _id: '5', title: 'Acoustic Panels', slug: 'acoustic' },
+  ]
+
+  const fallbackSettings = {
+    companyTagline: 'Pioneering excellence in construction and interior fit-outs across the Middle East.',
+    address: 'Dubai, United Arab Emirates',
+    phone: '+971 4 000 0000',
+    email: 'info@maqam-alemaar.com',
+  }
+
+  const displayServices = services && services.length > 0 ? services : fallbackServices
+  const displaySettings = settings || fallbackSettings
+
   return (
-    <footer className="bg-primary text-white">
-      {/* Top border */}
-      <div className="border-t border-white/20" />
-
-      <div className="container mx-auto px-4 md:px-6 py-12 md:py-16">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
-
-          {/* Column 1: Logo & tagline */}
-          <div className="space-y-5">
-            <Link href="/" className="inline-block">
-              {settings?.logo ? (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img
-                  src={urlFor(settings.logo).width(180).url()}
-                  alt={settings.siteName || "Maqam Al-Emaar"}
-                  className="h-10 w-auto object-contain brightness-0 invert"
-                />
-              ) : (
-                <span
-                  className="text-2xl font-bold text-white"
-                  style={{ fontFamily: "var(--font-display)" }}
-                >
-                  {settings?.siteName || "مقام الإعمار"}
-                </span>
-              )}
+    <footer className="bg-primary text-white pt-20 pb-10">
+      <div className="container mx-auto px-4 md:px-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8 mb-20">
+          {/* Column 1: Logo & Tagline */}
+          <div className="flex flex-col gap-8 md:col-span-2 lg:col-span-1">
+            <Link href="/" className="inline-block transition-transform duration-300 origin-left">
+              <Image
+                src="/logo.svg"
+                alt="Maqam Al-Emaar Logo"
+                width={240}
+                height={96}
+                className="h-24 w-auto brightness-0 invert"
+              />
             </Link>
-            {settings?.companyTagline && (
-              <p className="text-white/70 text-sm leading-relaxed max-w-xs">
-                {settings.companyTagline}
-              </p>
-            )}
-            <p className="text-white/50 text-xs pt-2">
-              © {new Date().getFullYear()} مقام الإعمار. جميع الحقوق محفوظة.
-              <br />
-              © {new Date().getFullYear()} Maqam Al-Emaar. All rights reserved.
+            <p className="text-white/80 text-sm leading-relaxed max-w-xs font-medium">
+              {displaySettings.companyTagline}
             </p>
+            {displaySettings.linkedinUrl && (
+              <div className="flex gap-4 pt-2">
+                <a
+                  href={displaySettings.linkedinUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-2.5 rounded-full bg-white/10 hover:bg-white/20 transition-all hover:-translate-y-1"
+                  aria-label="LinkedIn"
+                >
+                  <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24">
+                    <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.761 0 5-2.239 5-5v-14c0-2.761-2.239-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
+                  </svg>
+                </a>
+              </div>
+            )}
           </div>
 
-          {/* Column 2: Quick links */}
-          <div className="space-y-5">
-            <h3
-              className="text-lg font-semibold text-white"
-              style={{ fontFamily: "var(--font-display)" }}
-            >
-              Quick Links
-            </h3>
-            <ul className="space-y-3">
-              {navLinks.map((link) => (
-                <li key={link.href}>
+          {/* Column 2: Navigation */}
+          <div className="flex flex-col gap-6">
+            <h4 className="text-xs font-bold tracking-[0.25em] uppercase text-white/50">
+              Navigation
+            </h4>
+            <nav>
+              <ul className="flex flex-col gap-4">
+                {navLinks.map((link) => (
+                  <li key={link.href}>
+                    <Link
+                      href={link.href}
+                      className="text-white/80 hover:text-white transition-colors text-sm font-semibold inline-block"
+                    >
+                      {link.name}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+          </div>
+
+          {/* Column 3: Services */}
+          <div className="flex flex-col gap-6">
+            <h4 className="text-xs font-bold tracking-[0.25em] uppercase text-white/50">
+              Our Services
+            </h4>
+            <ul className="flex flex-col gap-4">
+              {displayServices.slice(0, 5).map((service) => (
+                <li key={service._id}>
                   <Link
-                    href={link.href}
-                    className="text-white/70 hover:text-white text-sm transition-colors"
+                    href={`/services/${service.slug}`}
+                    className="text-white/80 hover:text-white transition-colors text-sm font-semibold inline-block"
                   >
-                    {link.name}
+                    {service.title}
                   </Link>
                 </li>
               ))}
             </ul>
           </div>
 
-          {/* Column 3: Contact info */}
-          <div className="space-y-5">
-            <h3
-              className="text-lg font-semibold text-white"
-              style={{ fontFamily: "var(--font-display)" }}
-            >
-              Contact Us
-            </h3>
-            <ul className="space-y-4">
-              {settings?.address && (
-                <li className="flex items-start gap-3 text-white/70 text-sm">
-                  <MapPin className="w-4 h-4 text-white shrink-0 mt-0.5" />
-                  <span>{settings.address}</span>
-                </li>
-              )}
-              {settings?.phone && (
-                <li className="flex items-center gap-3 text-white/70 text-sm">
-                  <Phone className="w-4 h-4 text-white shrink-0" />
-                  <a
-                    href={`tel:${settings.phone.replace(/\s+/g, "")}`}
-                    className="hover:text-white transition-colors"
-                  >
-                    {settings.phone}
-                  </a>
-                </li>
-              )}
-              {settings?.email && (
-                <li className="flex items-center gap-3 text-white/70 text-sm">
-                  <Mail className="w-4 h-4 text-white shrink-0" />
-                  <a
-                    href={`mailto:${settings.email}`}
-                    className="hover:text-white transition-colors"
-                  >
-                    {settings.email}
-                  </a>
-                </li>
-              )}
-              {settings?.linkedinUrl && (
-                <li className="pt-2">
-                  <a
-                    href={settings.linkedinUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label="LinkedIn"
-                    className="inline-flex items-center gap-2 px-4 py-2 bg-white/10 hover:bg-white/20 text-white text-sm rounded-lg transition-colors"
-                  >
+          {/* Column 4: Contact Info */}
+          <div className="flex flex-col gap-6">
+            <h4 className="text-xs font-bold tracking-[0.25em] uppercase text-white/50">
+              Get in Touch
+            </h4>
+            <div className="flex flex-col gap-6">
+              <div className="flex items-start gap-4 group cursor-default">
+                <div className="p-2 rounded-lg bg-white/10 group-hover:bg-white/20 transition-colors">
+                  <MapPin className="w-4 h-4 text-white" />
+                </div>
+                <span className="text-white/80 text-sm leading-relaxed font-semibold">
+                  {displaySettings.address}
+                </span>
+              </div>
+              <div className="flex items-center gap-4 group">
+                <div className="p-2 rounded-lg bg-white/10 group-hover:bg-white/20 transition-colors">
+                  <Phone className="w-4 h-4 text-white" />
+                </div>
+                <a
+                  href={`tel:${displaySettings.phone}`}
+                  className="text-white/80 text-sm hover:text-white transition-colors font-bold"
+                >
+                  {displaySettings.phone}
+                </a>
+              </div>
+              <div className="flex items-center gap-4 group">
+                <div className="p-2 rounded-lg bg-white/10 group-hover:bg-white/20 transition-colors">
+                  <Mail className="w-4 h-4 text-white" />
+                </div>
+                <a
+                  href={`mailto:${displaySettings.email}`}
+                  className="text-white/80 text-sm hover:text-white transition-colors font-bold break-all"
+                >
+                  {displaySettings.email}
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
 
-                    {/* LinkedIn */}
-                  </a>
-                </li>
-              )}
-            </ul>
+        {/* Footer Bottom */}
+        <div className="pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-6">
+          <div className="flex flex-col items-center md:items-start gap-1">
+            <p className="text-white/40 text-[10px] font-bold tracking-widest uppercase">
+              © {new Date().getFullYear()} Maqam Al-Emaar. All rights reserved.
+            </p>
+            <p className="text-white/20 text-[9px] font-bold tracking-widest uppercase">
+              مقام الإعمار. جميع الحقوق محفوظة
+            </p>
+          </div>
+          <div className="flex gap-8">
+            <Link href="/privacy" className="text-white/40 hover:text-white transition-colors text-[9px] font-bold tracking-widest uppercase">
+              Privacy Policy
+            </Link>
+            <Link href="/terms" className="text-white/40 hover:text-white transition-colors text-[9px] font-bold tracking-widest uppercase">
+              Terms of Use
+            </Link>
           </div>
         </div>
       </div>

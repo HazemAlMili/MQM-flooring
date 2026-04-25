@@ -1,36 +1,39 @@
-"use client"
+"use client";
 
-import { useEffect } from "react"
-import { motion, AnimatePresence } from "framer-motion"
-import Link from "next/link"
-import { usePathname } from "next/navigation"
-import { X } from "lucide-react"
-import { SiteSettings } from "@/types/sanity"
-import { urlFor } from "@/sanity/lib/image"
+import { useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { X } from "lucide-react";
+import { SiteSettings } from "@/types/sanity";
+import Image from "next/image";
 
 interface MobileMenuProps {
-  isOpen: boolean
-  onClose: () => void
-  settings?: SiteSettings | null
+  isOpen: boolean;
+  onClose: () => void;
+  settings?: SiteSettings | null;
 }
 
 const navLinks = [
-  { name: "Home",     href: "/" },
-  { name: "About",    href: "/about" },
+  { name: "Home", href: "/" },
   { name: "Services", href: "/services" },
   { name: "Projects", href: "/projects" },
-  { name: "Careers",  href: "/careers" },
-  { name: "Contact",  href: "/contact" },
-]
+  { name: "Careers", href: "/careers" },
+  { name: "Contact", href: "/contact" },
+];
 
-export default function MobileMenu({ isOpen, onClose, settings }: MobileMenuProps) {
-  const pathname = usePathname()
+export default function MobileMenu({
+  isOpen,
+  onClose,
+  settings,
+}: MobileMenuProps) {
+  const pathname = usePathname();
 
   // Close on route change
   useEffect(() => {
-    onClose()
+    onClose();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pathname])
+  }, [pathname]);
 
   return (
     <AnimatePresence>
@@ -55,22 +58,18 @@ export default function MobileMenu({ isOpen, onClose, settings }: MobileMenuProp
           >
             {/* Header row: logo + close */}
             <div className="flex items-center justify-between mb-12">
-              <Link href="/" onClick={onClose} className="flex items-center gap-2">
-                {settings?.logo ? (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img
-                    src={urlFor(settings.logo).width(180).url()}
-                    alt={settings.siteName || "Maqam Al-Emaar"}
-                    className="h-9 w-auto object-contain brightness-0 invert"
-                  />
-                ) : (
-                  <span
-                    className="text-xl font-bold text-white"
-                    style={{ fontFamily: "var(--font-display)" }}
-                  >
-                    {settings?.siteName || "مقام الإعمار"}
-                  </span>
-                )}
+              <Link
+                href="/"
+                onClick={onClose}
+                className="flex items-center gap-2"
+              >
+                <Image
+                  src="/logo2.svg"
+                  alt="Maqam Al-Emaar Logo"
+                  width={140}
+                  height={56}
+                  className="h-14 w-auto brightness-0 invert"
+                />
               </Link>
               <button
                 onClick={onClose}
@@ -86,13 +85,17 @@ export default function MobileMenu({ isOpen, onClose, settings }: MobileMenuProp
               {navLinks.map((link, i) => {
                 const isActive =
                   pathname === link.href ||
-                  (link.href !== "/" && pathname.startsWith(link.href))
+                  (link.href !== "/" && pathname.startsWith(link.href));
                 return (
                   <motion.div
                     key={link.href}
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: i * 0.06, duration: 0.35, ease: "easeOut" }}
+                    transition={{
+                      delay: i * 0.06,
+                      duration: 0.35,
+                      ease: "easeOut",
+                    }}
                   >
                     <Link
                       href={link.href}
@@ -107,7 +110,7 @@ export default function MobileMenu({ isOpen, onClose, settings }: MobileMenuProp
                       {link.name}
                     </Link>
                   </motion.div>
-                )
+                );
               })}
             </nav>
 
@@ -121,7 +124,7 @@ export default function MobileMenu({ isOpen, onClose, settings }: MobileMenuProp
               <Link
                 href="/contact"
                 onClick={onClose}
-                className="block w-full py-4 bg-white text-primary text-center font-semibold rounded-xl text-lg hover:bg-white/90 transition-colors"
+                className="block w-full py-4 bg-white text-primary text-center font-semibold rounded-xl text-lg hover:bg-white/90 transition-colors shadow-btn"
                 style={{ fontFamily: "var(--font-display)" }}
               >
                 Get in Touch
@@ -131,5 +134,5 @@ export default function MobileMenu({ isOpen, onClose, settings }: MobileMenuProp
         </>
       )}
     </AnimatePresence>
-  )
+  );
 }

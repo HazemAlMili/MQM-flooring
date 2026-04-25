@@ -7,17 +7,8 @@ export default function PageWrapper({ children }: { children: React.ReactNode })
   const pathname = usePathname()
 
   return (
-    <AnimatePresence mode="wait">
-      <motion.div
-        key={pathname}
-        initial={{ opacity: 0, y: 15 }}
-        animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: -15 }}
-        transition={{ duration: 0.4, ease: "easeOut" }}
-        className="flex-1 flex flex-col"
-      >
-        {children}
-      </motion.div>
-    </AnimatePresence>
+    <div className="flex-1 flex flex-col">
+      {children}
+    </div>
   )
 }

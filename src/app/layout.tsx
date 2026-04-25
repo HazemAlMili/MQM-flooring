@@ -23,7 +23,7 @@ const inter = Inter({
 // ── Metadata ───────────────────────────────────────────────
 export const metadata: Metadata = {
   metadataBase: new URL(
-    process.env.NEXT_PUBLIC_SITE_URL || "https://maqam-alemaar.com"
+    process.env.NEXT_PUBLIC_SITE_URL || "https://maqam-alemaar.com",
   ),
   title: {
     default: "مقام الإعمار | Maqam Al-Emaar — Premium Construction & Fit-Out",
@@ -56,7 +56,7 @@ export default function RootLayout({
       "@type": "PostalAddress",
       addressCountry: "SA",
     },
-    logo: "https://maqam-alemaar.com/logo/mqm-logo-blue.png",
+    logo: "https://maqam-alemaar.com/logo2.svg",
   };
 
   return (
@@ -77,7 +77,7 @@ export default function RootLayout({
         />
 
         <Navbar />
-        <main className="flex-1 flex flex-col pt-20">
+        <main className="flex-1 flex flex-col pt-28">
           <PageWrapper>{children}</PageWrapper>
         </main>
         <Footer />

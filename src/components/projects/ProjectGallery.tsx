@@ -57,83 +57,107 @@ export default function ProjectGallery({ images }: ProjectGalleryProps) {
   return (
     <>
       {/* Thumbnail grid */}
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
         {images.map((img, i) => (
-          <button
+          <motion.button
             key={i}
+            initial={{ opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ delay: i * 0.05, duration: 0.4 }}
             onClick={() => { setActiveIndex(i); setOpen(true) }}
-            className="relative aspect-square overflow-hidden rounded-lg bg-surface hover:ring-2 hover:ring-primary transition-all duration-200 group"
+            className="relative aspect-[4/3] overflow-hidden rounded-xl bg-secondary hover:ring-4 hover:ring-primary/20 transition-all duration-300 group shadow-sm hover:shadow-xl"
             aria-label={`Open gallery image ${i + 1}`}
           >
             <SanityImage
               image={img}
               alt={img.alt || `Gallery image ${i + 1}`}
               fill
-              className="object-cover transition-transform duration-500 group-hover:scale-105"
+              className="object-cover transition-transform duration-700 group-hover:scale-110"
               sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
             />
-          </button>
+            {/* Hover Overlay */}
+            <div className="absolute inset-0 bg-primary/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+              <div className="bg-white/90 p-3 rounded-full scale-50 group-hover:scale-100 transition-transform duration-300">
+                <ChevronRight className="w-5 h-5 text-primary" />
+              </div>
+            </div>
+          </motion.button>
         ))}
       </div>
 
       {/* Lightbox */}
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="max-w-none w-screen h-screen m-0 p-0 bg-background/95 backdrop-blur-md border-none rounded-none flex items-center justify-center">
-          {/* Counter */}
-          <div className="absolute top-6 right-6 z-20 bg-primary/80 text-white text-sm font-mono px-3 py-1 rounded">
-            {activeIndex + 1} / {images.length}
+        <DialogContent className="max-w-none w-screen h-screen m-0 p-0 bg-foreground/95 backdrop-blur-xl border-none rounded-none flex items-center justify-center">
+          {/* Top Bar */}
+          <div className="absolute top-0 left-0 right-0 p-6 flex justify-between items-center z-50">
+            <div className="flex flex-col">
+              <span className="text-white/40 text-[10px] font-bold tracking-[0.4em] uppercase mb-1">Project Gallery</span>
+              <span className="text-white text-xs font-mono tracking-widest">
+                {activeIndex + 1} <span className="text-white/30">/</span> {images.length}
+              </span>
+            </div>
+            
+            <button
+              onClick={() => setOpen(false)}
+              className="p-3 bg-white/10 hover:bg-white/20 text-white rounded-full transition-all hover:rotate-90"
+              aria-label="Close lightbox"
+            >
+              <X className="w-6 h-6" />
+            </button>
           </div>
 
-          {/* Close */}
-          <button
-            onClick={() => setOpen(false)}
-            className="absolute top-6 left-6 z-20 p-2 text-foreground/70 hover:text-foreground transition-colors"
-            aria-label="Close lightbox"
-          >
-            <X className="w-6 h-6" />
-          </button>
-
           {/* Active image */}
-          <div className="relative w-full h-full flex items-center justify-center px-16">
+          <div className="relative w-full h-full flex items-center justify-center p-4 md:p-20">
             <AnimatePresence mode="wait">
               <motion.div
                 key={activeIndex}
-                initial={{ opacity: 0, scale: 0.97 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.97 }}
-                transition={{ duration: 0.2 }}
-                className="relative w-full max-w-5xl max-h-[80vh] aspect-video"
+                initial={{ opacity: 0, scale: 0.95, y: 20 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.95, y: -20 }}
+                transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+                className="relative w-full max-w-6xl h-full flex items-center justify-center"
               >
                 <SanityImage
                   image={images[activeIndex]}
                   alt={images[activeIndex].alt || `Image ${activeIndex + 1}`}
                   fill
                   priority
-                  className="object-contain"
-                  sizes="90vw"
+                  className="object-contain drop-shadow-2xl"
+                  sizes="100vw"
                 />
               </motion.div>
             </AnimatePresence>
           </div>
 
-          {/* Prev / Next arrows */}
+          {/* Navigation Controls */}
           {images.length > 1 && (
-            <>
+            <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex items-center gap-8 z-50">
               <button
                 onClick={prev}
-                className="absolute left-4 top-1/2 -translate-y-1/2 hidden md:flex p-3 bg-primary text-white rounded-full hover:bg-primary-hover transition-colors"
+                className="p-4 bg-white/10 hover:bg-primary text-white rounded-full transition-all group"
                 aria-label="Previous image"
               >
-                <ChevronLeft className="w-6 h-6" />
+                <ChevronLeft className="w-6 h-6 group-hover:-translate-x-1 transition-transform" />
               </button>
+              
+              <div className="flex gap-2">
+                {images.map((_, i) => (
+                  <div 
+                    key={i} 
+                    className={`h-1 transition-all duration-300 rounded-full ${i === activeIndex ? "w-8 bg-primary" : "w-2 bg-white/20"}`}
+                  />
+                ))}
+              </div>
+
               <button
                 onClick={next}
-                className="absolute right-4 top-1/2 -translate-y-1/2 hidden md:flex p-3 bg-primary text-white rounded-full hover:bg-primary-hover transition-colors"
+                className="p-4 bg-white/10 hover:bg-primary text-white rounded-full transition-all group"
                 aria-label="Next image"
               >
-                <ChevronRight className="w-6 h-6" />
+                <ChevronRight className="w-6 h-6 group-hover:translate-x-1 transition-transform" />
               </button>
-            </>
+            </div>
           )}
         </DialogContent>
       </Dialog>

@@ -1,5 +1,6 @@
 "use client"
 
+import { motion } from "framer-motion"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -18,8 +19,8 @@ const contactSchema = z.object({
 type ContactFormData = z.infer<typeof contactSchema>
 
 const inputClass = (hasError: boolean) =>
-  `w-full border rounded-lg px-4 py-3 text-foreground bg-white placeholder:text-muted-light transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary ${
-    hasError ? "border-red-400" : "border-border"
+  `w-full border rounded-lg px-4 py-3 text-foreground bg-white placeholder:text-muted-light transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary ${
+    hasError ? "border-red-400" : "border-border hover:border-primary/50"
   }`
 
 export default function ContactForm() {
@@ -53,8 +54,18 @@ export default function ContactForm() {
   /* ── Success state ── */
   if (isSuccess) {
     return (
-      <div className="bg-primary-wash border border-primary/20 rounded-xl p-10 text-center flex flex-col items-center">
-        <CheckCircle2 className="w-16 h-16 text-primary mb-5" />
+      <motion.div 
+        initial={{ opacity: 0, scale: 0.9 }}
+        animate={{ opacity: 1, scale: 1 }}
+        className="bg-primary-wash border border-primary/20 rounded-xl p-10 text-center flex flex-col items-center shadow-sm"
+      >
+        <motion.div
+          initial={{ scale: 0 }}
+          animate={{ scale: 1 }}
+          transition={{ type: "spring", damping: 12, stiffness: 200, delay: 0.2 }}
+        >
+          <CheckCircle2 className="w-16 h-16 text-primary mb-5" />
+        </motion.div>
         <h3
           className="text-2xl font-bold text-foreground mb-2"
           style={{ fontFamily: "var(--font-display)" }}
@@ -62,42 +73,54 @@ export default function ContactForm() {
           شكراً لتواصلك!
         </h3>
         <p className="text-muted-foreground mb-2">Thank you for reaching out.</p>
-        <p className="text-muted-foreground mb-8">
+        <p className="text-muted-foreground mb-8 text-sm">
           One of our specialists will get back to you shortly.
         </p>
         <button
           onClick={() => setIsSuccess(false)}
-          className="px-6 py-3 border border-primary text-primary hover:bg-primary hover:text-white rounded-lg transition-colors font-medium text-sm"
+          className="px-6 py-3 border border-primary text-primary hover:bg-primary hover:text-white rounded-lg transition-colors font-bold text-xs tracking-widest uppercase"
         >
           Send Another Message
         </button>
-      </div>
+      </motion.div>
     )
   }
 
   /* ── Form ── */
   return (
-    <div className="bg-white border border-border rounded-xl p-8 shadow-card">
-      <h3
-        className="text-2xl font-bold text-foreground mb-1"
-        style={{ fontFamily: "var(--font-display)" }}
-      >
-        تواصل معنا
-      </h3>
-      <p className="text-muted-foreground text-sm mb-7">Get in Touch</p>
+    <motion.div 
+      initial={{ opacity: 0, x: 20 }}
+      whileInView={{ opacity: 1, x: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.6, ease: "easeOut" }}
+      className="w-full"
+    >
+      <div className="mb-10">
+        <h3
+          className="text-2xl font-bold text-foreground mb-1"
+          style={{ fontFamily: "var(--font-display)" }}
+        >
+          تواصل معنا
+        </h3>
+        <p className="text-primary text-[10px] font-bold tracking-[0.3em] uppercase">Get in Touch</p>
+      </div>
 
       {globalError && (
-        <div className="bg-red-50 text-red-600 border border-red-200 p-4 rounded-lg mb-6 text-sm">
+        <motion.div 
+          initial={{ height: 0, opacity: 0 }}
+          animate={{ height: "auto", opacity: 1 }}
+          className="bg-red-50 text-red-600 border border-red-200 p-4 rounded-lg mb-6 text-sm overflow-hidden"
+        >
           {globalError}
-        </div>
+        </motion.div>
       )}
 
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
         {/* First / Last name */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-          <div className="space-y-1.5">
-            <label className="text-sm font-medium text-foreground">
-              First Name <span className="text-red-500">*</span>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+          <div className="space-y-2">
+            <label className="text-[10px] font-bold tracking-widest uppercase text-muted-foreground/80">
+              First Name <span className="text-primary">*</span>
             </label>
             <input
               type="text"
@@ -107,12 +130,12 @@ export default function ContactForm() {
               disabled={isSubmitting}
             />
             {errors.firstName && (
-              <p className="text-red-500 text-xs mt-1">{errors.firstName.message}</p>
+              <p className="text-red-500 text-[10px] font-bold mt-1 uppercase tracking-wider">{errors.firstName.message}</p>
             )}
           </div>
-          <div className="space-y-1.5">
-            <label className="text-sm font-medium text-foreground">
-              Last Name <span className="text-red-500">*</span>
+          <div className="space-y-2">
+            <label className="text-[10px] font-bold tracking-widest uppercase text-muted-foreground/80">
+              Last Name <span className="text-primary">*</span>
             </label>
             <input
               type="text"
@@ -122,16 +145,16 @@ export default function ContactForm() {
               disabled={isSubmitting}
             />
             {errors.lastName && (
-              <p className="text-red-500 text-xs mt-1">{errors.lastName.message}</p>
+              <p className="text-red-500 text-[10px] font-bold mt-1 uppercase tracking-wider">{errors.lastName.message}</p>
             )}
           </div>
         </div>
 
         {/* Email / Phone */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-          <div className="space-y-1.5">
-            <label className="text-sm font-medium text-foreground">
-              Email Address <span className="text-red-500">*</span>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+          <div className="space-y-2">
+            <label className="text-[10px] font-bold tracking-widest uppercase text-muted-foreground/80">
+              Email Address <span className="text-primary">*</span>
             </label>
             <input
               type="email"
@@ -141,11 +164,11 @@ export default function ContactForm() {
               disabled={isSubmitting}
             />
             {errors.email && (
-              <p className="text-red-500 text-xs mt-1">{errors.email.message}</p>
+              <p className="text-red-500 text-[10px] font-bold mt-1 uppercase tracking-wider">{errors.email.message}</p>
             )}
           </div>
-          <div className="space-y-1.5">
-            <label className="text-sm font-medium text-foreground">Phone Number</label>
+          <div className="space-y-2">
+            <label className="text-[10px] font-bold tracking-widest uppercase text-muted-foreground/80">Phone Number</label>
             <input
               type="tel"
               {...register("phone")}
@@ -157,9 +180,9 @@ export default function ContactForm() {
         </div>
 
         {/* Subject */}
-        <div className="space-y-1.5">
-          <label className="text-sm font-medium text-foreground">
-            Subject <span className="text-red-500">*</span>
+        <div className="space-y-2">
+          <label className="text-[10px] font-bold tracking-widest uppercase text-muted-foreground/80">
+            Subject <span className="text-primary">*</span>
           </label>
           <input
             type="text"
@@ -169,14 +192,14 @@ export default function ContactForm() {
             disabled={isSubmitting}
           />
           {errors.subject && (
-            <p className="text-red-500 text-xs mt-1">{errors.subject.message}</p>
+            <p className="text-red-500 text-[10px] font-bold mt-1 uppercase tracking-wider">{errors.subject.message}</p>
           )}
         </div>
 
         {/* Message */}
-        <div className="space-y-1.5">
-          <label className="text-sm font-medium text-foreground">
-            Message <span className="text-red-500">*</span>
+        <div className="space-y-2">
+          <label className="text-[10px] font-bold tracking-widest uppercase text-muted-foreground/80">
+            Message <span className="text-primary">*</span>
           </label>
           <textarea
             {...register("message")}
@@ -186,15 +209,17 @@ export default function ContactForm() {
             disabled={isSubmitting}
           />
           {errors.message && (
-            <p className="text-red-500 text-xs mt-1">{errors.message.message}</p>
+            <p className="text-red-500 text-[10px] font-bold mt-1 uppercase tracking-wider">{errors.message.message}</p>
           )}
         </div>
 
         {/* Submit */}
-        <button
+        <motion.button
+          whileHover={{ scale: 1.01 }}
+          whileTap={{ scale: 0.99 }}
           type="submit"
           disabled={isSubmitting}
-          className="w-full bg-primary hover:bg-primary-hover text-white py-4 font-semibold rounded-lg shadow-btn transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+          className="w-full bg-primary hover:bg-primary-hover text-white py-5 font-bold rounded-lg shadow-btn transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3 tracking-[0.2em] uppercase text-sm"
           style={{ fontFamily: "var(--font-display)" }}
         >
           {isSubmitting ? (
@@ -205,8 +230,8 @@ export default function ContactForm() {
           ) : (
             "Send Message"
           )}
-        </button>
+        </motion.button>
       </form>
-    </div>
+    </motion.div>
   )
 }
