@@ -3,58 +3,73 @@ import { client } from "@/sanity/lib/client"
 import { siteSettingsQuery } from "@/sanity/lib/queries"
 import { SiteSettings } from "@/types/sanity"
 import { urlFor } from "@/sanity/lib/image"
-import { MapPin, Phone, Mail, Globe } from "lucide-react"
+import { MapPin, Phone, Mail } from "lucide-react"
 
 export default async function Footer() {
   const settings = await client.fetch<SiteSettings>(siteSettingsQuery)
 
+  const navLinks = [
+    { name: "Home",     href: "/" },
+    { name: "About Us", href: "/about" },
+    { name: "Services", href: "/services" },
+    { name: "Projects", href: "/projects" },
+    { name: "Careers",  href: "/careers" },
+    { name: "Contact",  href: "/contact" },
+  ]
+
   return (
-    <footer className="bg-surface border-t border-accent mt-20">
+    <footer className="bg-primary text-white">
+      {/* Top border */}
+      <div className="border-t border-white/20" />
+
       <div className="container mx-auto px-4 md:px-6 py-12 md:py-16">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
-          
-          {/* Column 1: Logo & Info */}
-          <div className="space-y-6">
+
+          {/* Column 1: Logo & tagline */}
+          <div className="space-y-5">
             <Link href="/" className="inline-block">
               {settings?.logo ? (
                 // eslint-disable-next-line @next/next/no-img-element
                 <img
-                  src={urlFor(settings.logo).width(200).url()}
-                  alt={settings.siteName || "Logo"}
-                  className="h-10 w-auto object-contain"
+                  src={urlFor(settings.logo).width(180).url()}
+                  alt={settings.siteName || "Maqam Al-Emaar"}
+                  className="h-10 w-auto object-contain brightness-0 invert"
                 />
               ) : (
-                <span className="text-2xl font-serif font-bold text-accent">
-                  {settings?.siteName || "MQM Flooring"}
+                <span
+                  className="text-2xl font-bold text-white"
+                  style={{ fontFamily: "var(--font-display)" }}
+                >
+                  {settings?.siteName || "مقام الإعمار"}
                 </span>
               )}
             </Link>
             {settings?.companyTagline && (
-              <p className="text-foreground/70 max-w-sm">
+              <p className="text-white/70 text-sm leading-relaxed max-w-xs">
                 {settings.companyTagline}
               </p>
             )}
-            <p className="text-sm text-foreground/50 pt-4">
-              &copy; {new Date().getFullYear()} {settings?.siteName || "MQM Flooring"}. All rights reserved.
+            <p className="text-white/50 text-xs pt-2">
+              © {new Date().getFullYear()} مقام الإعمار. جميع الحقوق محفوظة.
+              <br />
+              © {new Date().getFullYear()} Maqam Al-Emaar. All rights reserved.
             </p>
           </div>
 
-          {/* Column 2: Quick Links */}
-          <div className="space-y-6">
-            <h3 className="text-lg font-serif font-semibold text-white">Quick Links</h3>
+          {/* Column 2: Quick links */}
+          <div className="space-y-5">
+            <h3
+              className="text-lg font-semibold text-white"
+              style={{ fontFamily: "var(--font-display)" }}
+            >
+              Quick Links
+            </h3>
             <ul className="space-y-3">
-              {[
-                { name: "Home", href: "/" },
-                { name: "About Us", href: "/about" },
-                { name: "Services", href: "/services" },
-                { name: "Projects", href: "/projects" },
-                { name: "Careers", href: "/careers" },
-                { name: "Contact", href: "/contact" },
-              ].map((link) => (
+              {navLinks.map((link) => (
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="text-foreground/70 hover:text-accent transition-colors"
+                    className="text-white/70 hover:text-white text-sm transition-colors"
                   >
                     {link.name}
                   </Link>
@@ -63,42 +78,54 @@ export default async function Footer() {
             </ul>
           </div>
 
-          {/* Column 3: Contact */}
-          <div className="space-y-6">
-            <h3 className="text-lg font-serif font-semibold text-white">Contact Us</h3>
+          {/* Column 3: Contact info */}
+          <div className="space-y-5">
+            <h3
+              className="text-lg font-semibold text-white"
+              style={{ fontFamily: "var(--font-display)" }}
+            >
+              Contact Us
+            </h3>
             <ul className="space-y-4">
               {settings?.address && (
-                <li className="flex items-start gap-3 text-foreground/70">
-                  <MapPin className="w-5 h-5 text-accent shrink-0 mt-0.5" />
+                <li className="flex items-start gap-3 text-white/70 text-sm">
+                  <MapPin className="w-4 h-4 text-white shrink-0 mt-0.5" />
                   <span>{settings.address}</span>
                 </li>
               )}
               {settings?.phone && (
-                <li className="flex items-center gap-3 text-foreground/70">
-                  <Phone className="w-5 h-5 text-accent shrink-0" />
-                  <a href={`tel:${settings.phone.replace(/\s+/g, '')}`} className="hover:text-accent transition-colors">
+                <li className="flex items-center gap-3 text-white/70 text-sm">
+                  <Phone className="w-4 h-4 text-white shrink-0" />
+                  <a
+                    href={`tel:${settings.phone.replace(/\s+/g, "")}`}
+                    className="hover:text-white transition-colors"
+                  >
                     {settings.phone}
                   </a>
                 </li>
               )}
               {settings?.email && (
-                <li className="flex items-center gap-3 text-foreground/70">
-                  <Mail className="w-5 h-5 text-accent shrink-0" />
-                  <a href={`mailto:${settings.email}`} className="hover:text-accent transition-colors">
+                <li className="flex items-center gap-3 text-white/70 text-sm">
+                  <Mail className="w-4 h-4 text-white shrink-0" />
+                  <a
+                    href={`mailto:${settings.email}`}
+                    className="hover:text-white transition-colors"
+                  >
                     {settings.email}
                   </a>
                 </li>
               )}
               {settings?.linkedinUrl && (
-                <li className="flex items-center gap-3 pt-2">
+                <li className="pt-2">
                   <a
                     href={settings.linkedinUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="p-2 bg-white/5 rounded-full hover:bg-accent hover:text-background transition-colors text-foreground/70"
                     aria-label="LinkedIn"
+                    className="inline-flex items-center gap-2 px-4 py-2 bg-white/10 hover:bg-white/20 text-white text-sm rounded-lg transition-colors"
                   >
-                    <Globe className="w-5 h-5" />
+
+                    {/* LinkedIn */}
                   </a>
                 </li>
               )}

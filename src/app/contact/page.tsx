@@ -2,17 +2,18 @@ import { Metadata } from "next"
 import { client } from "@/sanity/lib/client"
 import { siteSettingsQuery } from "@/sanity/lib/queries"
 import { SiteSettings } from "@/types/sanity"
-import PageHero from "@/components/shared/PageHero"
-import AnimatedSection from "@/components/shared/AnimatedSection"
-import ContactForm from "@/components/contact/ContactForm"
 import { MapPin, Phone, Mail, Clock } from "lucide-react"
+import PageHero from "@/components/shared/PageHero"
+import ContactForm from "@/components/contact/ContactForm"
+import AnimatedSection from "@/components/shared/AnimatedSection"
+import Logo from "@/components/shared/Logo"
 
 export const metadata: Metadata = {
-  title: "Contact Us | MQM Flooring",
-  description: "Get in touch with MQM Flooring for premium flooring and interior fit-out solutions.",
+  title: "Contact Us | Maqam Al-Emaar",
+  description: "Get in touch with our construction and engineering specialists.",
   openGraph: {
-    title: "Contact Us | MQM Flooring",
-    description: "Get in touch with MQM Flooring for premium flooring and interior fit-out solutions.",
+    title: "Contact Us | Maqam Al-Emaar",
+    description: "Get in touch with our construction and engineering specialists.",
     images: [{ url: "/og-default.jpg" }],
   },
 }
@@ -24,96 +25,112 @@ export default async function ContactPage() {
 
   return (
     <>
-      <PageHero 
-        title="Contact Us" 
-        subtitle="Let's discuss how we can bring your vision to life."
+      <PageHero
+        title="Contact Us"
+        subtitle="We are ready to bring your vision to life."
+        breadcrumb="Get in Touch"
       />
 
-      <section className="py-20 md:py-32">
-        <div className="container mx-auto px-4 md:px-6">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
+      <section className="py-20 md:py-32 bg-primary-wash relative overflow-hidden">
+        {/* Decorative background shape */}
+        <div className="absolute top-0 right-0 w-1/2 h-full bg-white hidden lg:block rounded-l-3xl shadow-sm" />
+
+        <div className="container mx-auto px-4 md:px-6 relative z-10">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-0 bg-white lg:bg-transparent rounded-2xl lg:rounded-none overflow-hidden lg:overflow-visible shadow-card lg:shadow-none">
             
-            {/* Left Column: Form */}
-            <AnimatedSection>
-              <ContactForm />
-            </AnimatedSection>
+            {/* Left panel: Info */}
+            <div className="lg:col-span-5 bg-primary p-10 md:p-14 lg:rounded-2xl text-white relative overflow-hidden lg:shadow-card-hover z-20">
+              {/* Decorative shapes */}
+              <div aria-hidden="true" className="absolute -bottom-24 -right-24 w-64 h-64 bg-white/5 rounded-full blur-3xl" />
+              <div aria-hidden="true" className="absolute top-12 -left-12 w-32 h-32 bg-white/10 rounded-full blur-2xl" />
 
-            {/* Right Column: Info & Map */}
-            <div className="space-y-12">
-              <AnimatedSection delay={0.2} className="grid grid-cols-1 sm:grid-cols-2 gap-8">
-                {settings?.address && (
-                  <div className="flex gap-4">
-                    <div className="w-12 h-12 bg-accent/10 flex items-center justify-center shrink-0 border border-accent/20">
-                      <MapPin className="w-5 h-5 text-accent" />
+              <AnimatedSection className="relative z-10 h-full flex flex-col">
+                <div className="mb-12">
+                  <Logo variant="white" size="lg" className="mb-8" />
+                  <h2 className="text-2xl font-bold mb-3" style={{ fontFamily: "var(--font-display)" }}>
+                    Corporate Headquarters
+                  </h2>
+                  <p className="text-white/80 leading-relaxed">
+                    Our team of specialists is ready to assist you with your project requirements. Reach out to us through any of the channels below.
+                  </p>
+                </div>
+
+                <div className="space-y-8 flex-1">
+                  {settings?.address && (
+                    <div className="flex items-start gap-4">
+                      <div className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center shrink-0">
+                        <MapPin className="w-5 h-5 text-white" />
+                      </div>
+                      <div>
+                        <h4 className="text-sm text-white/60 uppercase tracking-wider mb-1 font-mono">Address</h4>
+                        <p className="leading-relaxed">{settings.address}</p>
+                      </div>
+                    </div>
+                  )}
+
+                  {settings?.phone && (
+                    <div className="flex items-start gap-4">
+                      <div className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center shrink-0">
+                        <Phone className="w-5 h-5 text-white" />
+                      </div>
+                      <div>
+                        <h4 className="text-sm text-white/60 uppercase tracking-wider mb-1 font-mono">Phone</h4>
+                        <p className="leading-relaxed">{settings.phone}</p>
+                        {settings.mobile && <p className="leading-relaxed">{settings.mobile}</p>}
+                      </div>
+                    </div>
+                  )}
+
+                  {settings?.email && (
+                    <div className="flex items-start gap-4">
+                      <div className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center shrink-0">
+                        <Mail className="w-5 h-5 text-white" />
+                      </div>
+                      <div>
+                        <h4 className="text-sm text-white/60 uppercase tracking-wider mb-1 font-mono">Email</h4>
+                        <p className="leading-relaxed">{settings.email}</p>
+                      </div>
+                    </div>
+                  )}
+
+                  <div className="flex items-start gap-4">
+                    <div className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center shrink-0">
+                      <Clock className="w-5 h-5 text-white" />
                     </div>
                     <div>
-                      <h4 className="text-white font-serif text-lg mb-2">Our Office</h4>
-                      <p className="text-foreground/70 text-sm leading-relaxed">{settings.address}</p>
+                      <h4 className="text-sm text-white/60 uppercase tracking-wider mb-1 font-mono">Working Hours</h4>
+                      <p className="leading-relaxed">Sun - Thu: 8:00 AM - 6:00 PM</p>
+                      <p className="text-white/60 text-sm">Friday & Saturday: Closed</p>
                     </div>
-                  </div>
-                )}
-
-                {settings?.phone && (
-                  <div className="flex gap-4">
-                    <div className="w-12 h-12 bg-accent/10 flex items-center justify-center shrink-0 border border-accent/20">
-                      <Phone className="w-5 h-5 text-accent" />
-                    </div>
-                    <div>
-                      <h4 className="text-white font-serif text-lg mb-2">Call Us</h4>
-                      <a href={`tel:${settings.phone.replace(/\s+/g, '')}`} className="text-foreground/70 text-sm hover:text-accent transition-colors">
-                        {settings.phone}
-                      </a>
-                    </div>
-                  </div>
-                )}
-
-                {settings?.email && (
-                  <div className="flex gap-4">
-                    <div className="w-12 h-12 bg-accent/10 flex items-center justify-center shrink-0 border border-accent/20">
-                      <Mail className="w-5 h-5 text-accent" />
-                    </div>
-                    <div>
-                      <h4 className="text-white font-serif text-lg mb-2">Email Us</h4>
-                      <a href={`mailto:${settings.email}`} className="text-foreground/70 text-sm hover:text-accent transition-colors block">
-                        {settings.email}
-                      </a>
-                    </div>
-                  </div>
-                )}
-
-                <div className="flex gap-4">
-                  <div className="w-12 h-12 bg-accent/10 flex items-center justify-center shrink-0 border border-accent/20">
-                    <Clock className="w-5 h-5 text-accent" />
-                  </div>
-                  <div>
-                    <h4 className="text-white font-serif text-lg mb-2">Working Hours</h4>
-                    <p className="text-foreground/70 text-sm">Mon - Fri: 9:00 AM - 6:00 PM</p>
-                    <p className="text-foreground/70 text-sm">Sat - Sun: Closed</p>
                   </div>
                 </div>
               </AnimatedSection>
+            </div>
 
-              {/* Google Maps iframe */}
-              {settings?.googleMapsEmbedUrl && (
-                <AnimatedSection delay={0.4} className="h-[300px] w-full bg-surface border border-white/5 relative grayscale hover:grayscale-0 transition-all duration-500">
-                  <iframe
-                    src={settings.googleMapsEmbedUrl}
-                    width="100%"
-                    height="100%"
-                    style={{ border: 0 }}
-                    allowFullScreen
-                    loading="lazy"
-                    referrerPolicy="no-referrer-when-downgrade"
-                    title="Office Location Map"
-                    className="absolute inset-0"
-                  />
-                </AnimatedSection>
-              )}
+            {/* Right panel: Form */}
+            <div className="lg:col-span-7 lg:pl-16 p-8 lg:p-12 lg:py-16">
+              <AnimatedSection delay={0.2}>
+                <ContactForm />
+              </AnimatedSection>
             </div>
 
           </div>
         </div>
       </section>
+
+      {/* Map Section */}
+      {settings?.googleMapsEmbedUrl && (
+        <section className="h-[400px] w-full relative">
+          <iframe
+            src={settings.googleMapsEmbedUrl}
+            className="absolute inset-0 w-full h-full border-0"
+            allowFullScreen={false}
+            loading="lazy"
+            referrerPolicy="no-referrer-when-downgrade"
+            title="Maqam Al-Emaar Office Location"
+          />
+        </section>
+      )}
     </>
   )
 }

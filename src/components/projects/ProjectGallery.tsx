@@ -28,27 +28,27 @@ export default function ProjectGallery({ images }: ProjectGalleryProps) {
     if (!open) return
     const handler = (e: KeyboardEvent) => {
       if (e.key === "ArrowRight") next()
-      if (e.key === "ArrowLeft") prev()
+      if (e.key === "ArrowLeft")  prev()
     }
     window.addEventListener("keydown", handler)
     return () => window.removeEventListener("keydown", handler)
   }, [open, next, prev])
 
-  // Touch/swipe navigation
+  // Touch / swipe
   useEffect(() => {
     if (!open) return
     let startX = 0
     const onTouchStart = (e: TouchEvent) => { startX = e.touches[0].clientX }
-    const onTouchEnd = (e: TouchEvent) => {
+    const onTouchEnd   = (e: TouchEvent) => {
       const delta = e.changedTouches[0].clientX - startX
       if (delta > 50) prev()
       if (delta < -50) next()
     }
     window.addEventListener("touchstart", onTouchStart)
-    window.addEventListener("touchend", onTouchEnd)
+    window.addEventListener("touchend",   onTouchEnd)
     return () => {
       window.removeEventListener("touchstart", onTouchStart)
-      window.removeEventListener("touchend", onTouchEnd)
+      window.removeEventListener("touchend",   onTouchEnd)
     }
   }, [open, next, prev])
 
@@ -56,13 +56,14 @@ export default function ProjectGallery({ images }: ProjectGalleryProps) {
 
   return (
     <>
-      {/* Thumbnail Grid */}
+      {/* Thumbnail grid */}
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
         {images.map((img, i) => (
           <button
             key={i}
             onClick={() => { setActiveIndex(i); setOpen(true) }}
-            className="relative aspect-square overflow-hidden rounded-sm bg-surface hover:opacity-90 transition-opacity group"
+            className="relative aspect-square overflow-hidden rounded-lg bg-surface hover:ring-2 hover:ring-primary transition-all duration-200 group"
+            aria-label={`Open gallery image ${i + 1}`}
           >
             <SanityImage
               image={img}
@@ -75,11 +76,11 @@ export default function ProjectGallery({ images }: ProjectGalleryProps) {
         ))}
       </div>
 
-      {/* Lightbox Dialog */}
+      {/* Lightbox */}
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent className="max-w-none w-screen h-screen m-0 p-0 bg-background/95 backdrop-blur-md border-none rounded-none flex items-center justify-center">
           {/* Counter */}
-          <div className="absolute top-6 right-6 z-20 font-mono text-sm text-foreground/70">
+          <div className="absolute top-6 right-6 z-20 bg-primary/80 text-white text-sm font-mono px-3 py-1 rounded">
             {activeIndex + 1} / {images.length}
           </div>
 
@@ -92,7 +93,7 @@ export default function ProjectGallery({ images }: ProjectGalleryProps) {
             <X className="w-6 h-6" />
           </button>
 
-          {/* Image */}
+          {/* Active image */}
           <div className="relative w-full h-full flex items-center justify-center px-16">
             <AnimatePresence mode="wait">
               <motion.div
@@ -100,7 +101,7 @@ export default function ProjectGallery({ images }: ProjectGalleryProps) {
                 initial={{ opacity: 0, scale: 0.97 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.97 }}
-                transition={{ duration: 0.3 }}
+                transition={{ duration: 0.2 }}
                 className="relative w-full max-w-5xl max-h-[80vh] aspect-video"
               >
                 <SanityImage
@@ -115,19 +116,19 @@ export default function ProjectGallery({ images }: ProjectGalleryProps) {
             </AnimatePresence>
           </div>
 
-          {/* Navigation Arrows (desktop only) */}
+          {/* Prev / Next arrows */}
           {images.length > 1 && (
             <>
               <button
                 onClick={prev}
-                className="absolute left-4 top-1/2 -translate-y-1/2 hidden md:flex p-3 text-foreground/70 hover:text-foreground transition-colors bg-white/5 hover:bg-white/10"
+                className="absolute left-4 top-1/2 -translate-y-1/2 hidden md:flex p-3 bg-primary text-white rounded-full hover:bg-primary-hover transition-colors"
                 aria-label="Previous image"
               >
                 <ChevronLeft className="w-6 h-6" />
               </button>
               <button
                 onClick={next}
-                className="absolute right-4 top-1/2 -translate-y-1/2 hidden md:flex p-3 text-foreground/70 hover:text-foreground transition-colors bg-white/5 hover:bg-white/10"
+                className="absolute right-4 top-1/2 -translate-y-1/2 hidden md:flex p-3 bg-primary text-white rounded-full hover:bg-primary-hover transition-colors"
                 aria-label="Next image"
               >
                 <ChevronRight className="w-6 h-6" />

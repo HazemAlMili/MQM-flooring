@@ -1,67 +1,86 @@
 import type { Metadata } from "next";
+import { Cairo, Inter } from "next/font/google";
 import "./globals.css";
-import { ThemeProvider } from "@/components/shared/ThemeProvider";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import PageWrapper from "@/components/layout/PageWrapper";
 
+// ── Fonts ──────────────────────────────────────────────────
+const cairo = Cairo({
+  subsets: ["arabic", "latin"],
+  weight: ["400", "600", "700", "800"],
+  variable: "--font-display",
+  display: "swap",
+});
+
+const inter = Inter({
+  subsets: ["latin"],
+  weight: ["400", "500", "600"],
+  variable: "--font-body",
+  display: "swap",
+});
+
+// ── Metadata ───────────────────────────────────────────────
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://mqmflooring.com'),
-  title: "Premium Flooring & Fit-Out | MQM Flooring",
-  description: "Specialized in luxury flooring, raised floors, and complete interior fit-out solutions across the Middle East.",
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_SITE_URL || "https://maqam-alemaar.com"
+  ),
+  title: {
+    default: "مقام الإعمار | Maqam Al-Emaar — Premium Construction & Fit-Out",
+    template: "%s | Maqam Al-Emaar",
+  },
+  description:
+    "Maqam Al-Emaar delivers turnkey construction, electro-mechanical, and safety & security projects across the Middle East with precision and excellence.",
   openGraph: {
     type: "website",
     locale: "en_IE",
-    url: "https://mqmflooring.com",
-    siteName: "MQM Flooring",
+    url: "https://maqam-alemaar.com",
+    siteName: "مقام الإعمار | Maqam Al-Emaar",
+    images: [{ url: "/og-default.jpg", width: 1200, height: 630 }],
   },
 };
 
+// ── Root Layout ────────────────────────────────────────────
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  // Base Schema.org LocalBusiness JSON-LD
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
-    name: "MQM Flooring",
-    url: process.env.NEXT_PUBLIC_SITE_URL || "https://mqmflooring.com",
-    telephone: "+971 50 123 4567",
+    name: "مقام الإعمار | Maqam Al-Emaar",
+    url: process.env.NEXT_PUBLIC_SITE_URL || "https://maqam-alemaar.com",
+    telephone: "+966-XX-XXX-XXXX",
     address: {
       "@type": "PostalAddress",
-      addressCountry: "AE",
+      addressCountry: "SA",
     },
+    logo: "https://maqam-alemaar.com/logo/mqm-logo-blue.png",
   };
 
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html
+      lang="en"
+      className={`${cairo.variable} ${inter.variable}`}
+      suppressHydrationWarning
+    >
       <head>
-        <link rel="preload" href="/fonts/CormorantGaramond-Variable.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
         <link rel="preconnect" href="https://cdn.sanity.io" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
       </head>
-      <body className="antialiased min-h-screen bg-background text-foreground flex flex-col font-sans">
+      <body className="antialiased min-h-screen bg-background text-foreground flex flex-col">
         {/* Global JSON-LD */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
-        
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="dark"
-          enableSystem={false}
-          disableTransitionOnChange
-        >
-          <Navbar />
-          <main className="flex-1 flex flex-col pt-24">
-            <PageWrapper>
-              {children}
-            </PageWrapper>
-          </main>
-          <Footer />
-        </ThemeProvider>
+
+        <Navbar />
+        <main className="flex-1 flex flex-col pt-20">
+          <PageWrapper>{children}</PageWrapper>
+        </main>
+        <Footer />
       </body>
     </html>
   );

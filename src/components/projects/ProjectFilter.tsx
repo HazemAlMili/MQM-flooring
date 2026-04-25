@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation"
 import { AnimatePresence, motion } from "framer-motion"
 import { Project, ServiceCategory } from "@/types/sanity"
 import ProjectCard from "./ProjectCard"
+import { dummyProjects, dummyServiceCategories } from "@/lib/dummyData"
 
 interface ProjectFilterProps {
   projects: Project[]
@@ -15,6 +16,10 @@ function ProjectFilterInner({ projects, services }: ProjectFilterProps) {
   const router = useRouter()
   const searchParams = useSearchParams()
   const activeCategory = searchParams.get("category") ?? "all"
+
+  // TODO: Remove dummy fallback once Sanity is populated
+  const displayProjects  = projects.length  > 0 ? projects  : dummyProjects
+  const displayServices  = services.length  > 0 ? services  : dummyServiceCategories
 
   const setFilter = useCallback(
     (slug: string) => {
@@ -30,18 +35,18 @@ function ProjectFilterInner({ projects, services }: ProjectFilterProps) {
   )
 
   const filtered = useMemo(() => {
-    if (activeCategory === "all") return projects
-    return projects.filter((p) => p.serviceCategory?.slug === activeCategory)
-  }, [projects, activeCategory])
+    if (activeCategory === "all") return displayProjects
+    return displayProjects.filter((p) => p.serviceCategory?.slug === activeCategory)
+  }, [displayProjects, activeCategory])
 
   const categories = [
-    { label: "All", slug: "all" },
-    ...services.map((s) => ({ label: s.title, slug: s.slug })),
+    { label: "All",  slug: "all" },
+    ...displayServices.map((s) => ({ label: s.title, slug: s.slug })),
   ]
 
   return (
     <div>
-      {/* Filter Tabs */}
+      {/* Filter pills */}
       <div className="flex flex-wrap gap-2 mb-12">
         {categories.map((cat) => {
           const isActive = activeCategory === cat.slug
@@ -49,20 +54,13 @@ function ProjectFilterInner({ projects, services }: ProjectFilterProps) {
             <button
               key={cat.slug}
               onClick={() => setFilter(cat.slug)}
-              className={`relative px-5 py-2.5 text-sm font-medium transition-colors border rounded-none ${
+              className={`relative px-5 py-2 text-sm font-medium rounded-full transition-all ${
                 isActive
-                  ? "border-accent text-accent"
-                  : "border-white/10 text-foreground/60 hover:border-white/30 hover:text-foreground"
+                  ? "bg-primary text-white shadow-btn"
+                  : "bg-surface text-muted-foreground border border-border hover:text-primary hover:border-primary"
               }`}
             >
-              {isActive && (
-                <motion.div
-                  layoutId="active-filter-pill"
-                  className="absolute inset-0 bg-accent/10"
-                  transition={{ type: "spring", bounce: 0.2, duration: 0.4 }}
-                />
-              )}
-              <span className="relative z-10">{cat.label}</span>
+              {cat.label}
             </button>
           )
         })}
@@ -92,7 +90,9 @@ function ProjectFilterInner({ projects, services }: ProjectFilterProps) {
               exit={{ opacity: 0 }}
               className="col-span-full text-center py-20"
             >
-              <p className="text-foreground/50 text-lg">No projects in this category yet.</p>
+              <p className="text-muted-foreground text-lg">
+                No projects in this category yet.
+              </p>
             </motion.div>
           )}
         </AnimatePresence>
@@ -103,7 +103,13 @@ function ProjectFilterInner({ projects, services }: ProjectFilterProps) {
 
 export default function ProjectFilter(props: ProjectFilterProps) {
   return (
-    <Suspense fallback={<div className="text-foreground/50 text-center py-20">Loading projects...</div>}>
+    <Suspense
+      fallback={
+        <div className="text-muted-foreground text-center py-20">
+          Loading projects…
+        </div>
+      }
+    >
       <ProjectFilterInner {...props} />
     </Suspense>
   )

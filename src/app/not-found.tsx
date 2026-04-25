@@ -3,46 +3,59 @@ import { client } from "@/sanity/lib/client"
 import { featuredProjectsQuery } from "@/sanity/lib/queries"
 import { Project } from "@/types/sanity"
 import ProjectCard from "@/components/projects/ProjectCard"
+import { dummyProjects } from "@/lib/dummyData"
 
 export default async function NotFound() {
-  // Fetch up to 3 featured projects for the 404 page
-  // If this fails, we just show an empty grid, but it shouldn't fail.
   let featuredProjects: Project[] = []
   try {
     const projects = await client.fetch<Project[]>(featuredProjectsQuery)
-    featuredProjects = projects.slice(0, 3)
+    featuredProjects = projects ? projects.slice(0, 3) : []
   } catch (error) {
     console.error("Failed to fetch featured projects for 404 page", error)
   }
 
+  // TODO: Remove dummy fallback once Sanity is populated
+  const displayProjects = featuredProjects.length > 0 ? featuredProjects : dummyProjects.slice(0, 3)
+
   return (
-    <div className="pt-32 pb-20 md:py-40 min-h-[80vh] flex flex-col justify-center">
+    <div className="pt-32 pb-20 md:py-40 min-h-[80vh] flex flex-col justify-center bg-primary-wash">
       <div className="container mx-auto px-4 md:px-6 text-center">
         {/* Error Header */}
-        <h1 className="text-8xl md:text-9xl font-serif text-accent mb-6">404</h1>
-        <h2 className="text-3xl md:text-4xl font-serif text-white mb-4">
-          Page Not Found
+        <h1 
+          className="text-8xl md:text-9xl font-bold text-primary mb-6"
+          style={{ fontFamily: "var(--font-display)" }}
+        >
+          404
+        </h1>
+        <h2 
+          className="text-3xl md:text-4xl font-bold text-foreground mb-4"
+          style={{ fontFamily: "var(--font-display)" }}
+        >
+          الصفحة غير موجودة / Page Not Found
         </h2>
-        <p className="text-foreground/70 text-lg max-w-lg mx-auto mb-10">
+        <p className="text-muted-foreground text-lg max-w-lg mx-auto mb-10 leading-relaxed">
           The page you are looking for doesn't exist or has been moved. 
           Let's get you back on track to exploring our premium spaces.
         </p>
         
         <Link 
           href="/"
-          className="inline-block bg-accent text-background px-8 py-4 font-medium hover:bg-accent/90 transition-colors mb-24"
+          className="inline-block bg-primary text-white px-8 py-4 font-semibold rounded-lg hover:bg-primary-hover transition-colors mb-24 shadow-btn"
         >
-          Return to Homepage
+          ← Back to Home
         </Link>
 
         {/* Featured Projects Grid */}
-        {featuredProjects.length > 0 && (
-          <div className="text-left mt-12 border-t border-white/10 pt-16">
-            <h3 className="text-2xl font-serif text-white mb-8">
+        {displayProjects.length > 0 && (
+          <div className="text-left mt-12 border-t border-border pt-16">
+            <h3 
+              className="text-2xl font-bold text-foreground mb-8"
+              style={{ fontFamily: "var(--font-display)" }}
+            >
               Explore Our Recent Work
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {featuredProjects.map((project) => (
+              {displayProjects.map((project) => (
                 <ProjectCard key={project._id} project={project} />
               ))}
             </div>
