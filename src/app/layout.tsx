@@ -38,6 +38,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
+        <link rel="preload" href="/fonts/CormorantGaramond-Variable.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
         <link rel="preconnect" href="https://cdn.sanity.io" />
       </head>
       <body className="antialiased min-h-screen bg-background text-foreground flex flex-col font-sans">

@@ -10,6 +10,11 @@ import JobAccordion from "@/components/careers/JobAccordion"
 export const metadata: Metadata = {
   title: "Careers | MQM Flooring",
   description: "Join our team. Explore open positions at MQM Flooring.",
+  openGraph: {
+    title: "Careers | MQM Flooring",
+    description: "Join our team. Explore open positions at MQM Flooring.",
+    images: [{ url: "/og-default.jpg" }],
+  },
 }
 
 export const revalidate = 60

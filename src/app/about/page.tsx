@@ -7,6 +7,11 @@ import { ArrowRight } from "lucide-react"
 export const metadata: Metadata = {
   title: "About Us | MQM Flooring",
   description: "Learn about our history, mission, and vision in delivering premium flooring and fit-out solutions.",
+  openGraph: {
+    title: "About Us | MQM Flooring",
+    description: "Learn about our history, mission, and vision in delivering premium flooring and fit-out solutions.",
+    images: [{ url: "/og-default.jpg" }],
+  },
 }
 
 export default function AboutPage() {

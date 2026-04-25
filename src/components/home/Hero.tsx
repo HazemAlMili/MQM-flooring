@@ -4,16 +4,21 @@ import { motion } from "framer-motion"
 import Link from "next/link"
 import { ArrowRight } from "lucide-react"
 
+import Image from "next/image"
+
 export default function Hero() {
   return (
     <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden">
       {/* Background with dark overlay */}
-      <div 
-        className="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat"
-        style={{
-          backgroundImage: "url('/og-default.jpg')",
-        }}
-      >
+      <div className="absolute inset-0 z-0 bg-background">
+        <Image 
+          src="/og-default.jpg" 
+          alt="Premium Flooring and Fit-outs" 
+          fill 
+          priority 
+          className="object-cover object-center"
+          sizes="100vw"
+        />
         {/* We use a heavy dark gradient overlay to ensure text readability */}
         <div className="absolute inset-0 bg-gradient-to-b from-background/80 via-background/60 to-background" />
       </div>

@@ -8,6 +8,11 @@ import ServiceCard from "@/components/services/ServiceCard"
 export const metadata: Metadata = {
   title: "Our Services | MQM Flooring",
   description: "Explore our premium flooring and interior fit-out services tailored for luxury residential and commercial spaces.",
+  openGraph: {
+    title: "Our Services | MQM Flooring",
+    description: "Explore our premium flooring and interior fit-out services tailored for luxury residential and commercial spaces.",
+    images: [{ url: "/og-default.jpg" }],
+  },
 }
 
 export const revalidate = 60

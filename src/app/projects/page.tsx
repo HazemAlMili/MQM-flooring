@@ -8,6 +8,11 @@ import ProjectFilter from "@/components/projects/ProjectFilter"
 export const metadata: Metadata = {
   title: "Our Projects | MQM Flooring",
   description: "Explore our portfolio of premium flooring and interior fit-out projects across the Middle East.",
+  openGraph: {
+    title: "Our Projects | MQM Flooring",
+    description: "Explore our portfolio of premium flooring and interior fit-out projects across the Middle East.",
+    images: [{ url: "/og-default.jpg" }],
+  },
 }
 
 export const revalidate = 60

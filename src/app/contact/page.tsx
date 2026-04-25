@@ -10,6 +10,11 @@ import { MapPin, Phone, Mail, Clock } from "lucide-react"
 export const metadata: Metadata = {
   title: "Contact Us | MQM Flooring",
   description: "Get in touch with MQM Flooring for premium flooring and interior fit-out solutions.",
+  openGraph: {
+    title: "Contact Us | MQM Flooring",
+    description: "Get in touch with MQM Flooring for premium flooring and interior fit-out solutions.",
+    images: [{ url: "/og-default.jpg" }],
+  },
 }
 
 export const revalidate = 60
