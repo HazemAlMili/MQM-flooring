@@ -1,8 +1,7 @@
 import { Metadata } from "next"
 import { notFound } from "next/navigation"
-import { client } from "@/sanity/lib/client"
-import { serviceBySlugQuery, allServicesQuery } from "@/sanity/lib/queries"
-import { ServiceCategory } from "@/types/sanity"
+import { ServiceCategory } from "@/types"
+import { dummyServiceCategories } from "@/lib/dummyData"
 import PageHero from "@/components/shared/PageHero"
 import ServiceDetail from "@/components/services/ServiceDetail"
 
@@ -13,7 +12,7 @@ interface Props {
 }
 
 export async function generateStaticParams() {
-  const services = await client.fetch<ServiceCategory[]>(allServicesQuery)
+  const services = dummyServiceCategories
   return services.map((service) => ({
     slug: service.slug,
   }))
@@ -21,7 +20,7 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const resolvedParams = await params
-  const service = await client.fetch<ServiceCategory>(serviceBySlugQuery, { slug: resolvedParams.slug })
+  const service = dummyServiceCategories.find(s => s.slug === resolvedParams.slug)
 
   if (!service) return { title: "Not Found" }
 
@@ -33,7 +32,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function ServiceDetailPage({ params }: Props) {
   const resolvedParams = await params
-  const service = await client.fetch<ServiceCategory>(serviceBySlugQuery, { slug: resolvedParams.slug })
+  const service = dummyServiceCategories.find(s => s.slug === resolvedParams.slug)
 
   if (!service) {
     notFound()

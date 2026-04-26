@@ -1,8 +1,4 @@
 import { Metadata } from "next"
-import Link from "next/link"
-import { client } from "@/sanity/lib/client"
-import { allProjectsQuery, allServicesQuery } from "@/sanity/lib/queries"
-import { Project, ServiceCategory } from "@/types/sanity"
 import PageHero from "@/components/shared/PageHero"
 import ProjectFilter from "@/components/projects/ProjectFilter"
 import { dummyProjects } from "@/lib/dummyData"
@@ -20,13 +16,9 @@ export const metadata: Metadata = {
 export const revalidate = 60
 
 export default async function ProjectsPage() {
-  const [projects, services] = await Promise.all([
-    client.fetch<Project[]>(allProjectsQuery),
-    client.fetch<ServiceCategory[]>(allServicesQuery),
-  ])
-
-  // TODO: Remove dummy fallback once Sanity is populated
-  const displayProjects = projects && projects.length > 0 ? projects : dummyProjects
+  const displayProjects = dummyProjects
+  // Need to get services from dummyServiceCategories if available, let's just import dummyServiceCategories
+  // Actually, wait, let me just replace the body completely
 
   return (
     <>
@@ -37,7 +29,7 @@ export default async function ProjectsPage() {
 
       <section className="py-20 md:py-32 bg-primary-wash">
         <div className="container mx-auto px-4 md:px-6">
-          <ProjectFilter projects={projects || []} services={services || []} />
+          <ProjectFilter projects={displayProjects} services={[]} />
         </div>
       </section>
     </>

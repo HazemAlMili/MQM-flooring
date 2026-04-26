@@ -1,41 +1,26 @@
-import { Project, ServiceCategory } from "@/types/sanity"
+import { Project, ServiceCategory } from "@/types"
 
 // ─────────────────────────────────────────────────────────────
-// Dummy placeholder data — used as fallback when Sanity CMS
-// is not yet populated. All dummy covers use /og-default.jpg.
-// TODO: Remove dummy fallback once Sanity is populated.
+// Dummy placeholder data
 // ─────────────────────────────────────────────────────────────
-
-const makeCoverImage = () => ({
-  _type: "image" as const,
-  asset: {
-    _id: "dummy-asset",
-    url: "/og-default.jpg",
-    metadata: {
-      lqip: "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAMCAgMCAgMDAwMEAwMEBQgFBQQEBQoH",
-      dimensions: { width: 1200, height: 630, aspectRatio: 1.905 },
-    },
-  },
-  alt: "Project cover",
-})
 
 export const dummyServiceCategories: ServiceCategory[] = [
   {
-    _id: "cat-1",
+    id: "cat-1",
     title: "General Contracting",
     slug: "general-contracting",
     shortDescription: "End-to-end turnkey project delivery from foundation to finishing.",
     icon: "building-2",
   },
   {
-    _id: "cat-2",
+    id: "cat-2",
     title: "Electro-Mechanical",
     slug: "electro-mechanical",
     shortDescription: "Complete MEP systems: HVAC, electrical, plumbing, and BMS integration.",
     icon: "zap",
   },
   {
-    _id: "cat-3",
+    id: "cat-3",
     title: "Safety & Security",
     slug: "safety-security",
     shortDescription: "Fire suppression, CCTV, access control, and alarm systems.",
@@ -45,7 +30,7 @@ export const dummyServiceCategories: ServiceCategory[] = [
 
 export const dummyProjects: Project[] = [
   {
-    _id: "proj-1",
+    id: "proj-1",
     title: "Al-Madinah Commercial Tower",
     slug: "al-madinah-commercial-tower",
     summary:
@@ -58,10 +43,10 @@ export const dummyProjects: Project[] = [
     clientName: "Al-Noor Development Group",
     location: "Madinah, Saudi Arabia",
     totalAreaSqm: 48000,
-    coverImage: makeCoverImage(),
+    coverImage: "/og-default.jpg",
   },
   {
-    _id: "proj-2",
+    id: "proj-2",
     title: "Riyadh Industrial MEP Complex",
     slug: "riyadh-industrial-mep-complex",
     summary:
@@ -74,10 +59,10 @@ export const dummyProjects: Project[] = [
     clientName: "Saudi Industrial Authority",
     location: "Riyadh, Saudi Arabia",
     totalAreaSqm: 120000,
-    coverImage: makeCoverImage(),
+    coverImage: "/og-default.jpg",
   },
   {
-    _id: "proj-3",
+    id: "proj-3",
     title: "Jeddah Residential Compound",
     slug: "jeddah-residential-compound",
     summary:
@@ -90,10 +75,10 @@ export const dummyProjects: Project[] = [
     clientName: "Al-Rashid Real Estate",
     location: "Jeddah, Saudi Arabia",
     totalAreaSqm: 85000,
-    coverImage: makeCoverImage(),
+    coverImage: "/og-default.jpg",
   },
   {
-    _id: "proj-4",
+    id: "proj-4",
     title: "Jubail Safety & Security Hub",
     slug: "jubail-safety-security-hub",
     summary:
@@ -106,10 +91,10 @@ export const dummyProjects: Project[] = [
     clientName: "SABIC Affiliates",
     location: "Jubail, Saudi Arabia",
     totalAreaSqm: 62000,
-    coverImage: makeCoverImage(),
+    coverImage: "/og-default.jpg",
   },
   {
-    _id: "proj-5",
+    id: "proj-5",
     title: "Dammam Logistics Warehouse",
     slug: "dammam-logistics-warehouse",
     summary:
@@ -122,10 +107,10 @@ export const dummyProjects: Project[] = [
     clientName: "Gulf Logistics Co.",
     location: "Dammam, Saudi Arabia",
     totalAreaSqm: 35000,
-    coverImage: makeCoverImage(),
+    coverImage: "/og-default.jpg",
   },
   {
-    _id: "proj-6",
+    id: "proj-6",
     title: "Makkah Hotel MEP Works",
     slug: "makkah-hotel-mep-works",
     summary:
@@ -138,6 +123,6 @@ export const dummyProjects: Project[] = [
     clientName: "Abraj Hospitality",
     location: "Makkah, Saudi Arabia",
     totalAreaSqm: 72000,
-    coverImage: makeCoverImage(),
+    coverImage: "/og-default.jpg",
   },
 ]

@@ -3,7 +3,7 @@
 import { useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { ChevronDown, MapPin, Briefcase, Building2, Calendar } from "lucide-react"
-import { JobPosting } from "@/types/sanity"
+import { JobPosting } from "@/types"
 
 interface JobAccordionProps {
   job: JobPosting

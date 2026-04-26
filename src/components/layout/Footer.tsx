@@ -1,15 +1,10 @@
 import Link from "next/link"
-import { client } from "@/sanity/lib/client"
-import { siteSettingsQuery, allServicesQuery } from "@/sanity/lib/queries"
-import { SiteSettings, ServiceCategory } from "@/types/sanity"
+import { dummyServiceCategories } from "@/lib/dummyData"
+import { SiteSettings, ServiceCategory } from "@/types"
 import { MapPin, Phone, Mail } from "lucide-react"
 import Image from "next/image"
 
 export default async function Footer() {
-  const [settings, services] = await Promise.all([
-    client.fetch<SiteSettings>(siteSettingsQuery),
-    client.fetch<ServiceCategory[]>(allServicesQuery),
-  ])
 
   const navLinks = [
     { name: "Home", href: "/" },
@@ -19,23 +14,25 @@ export default async function Footer() {
     { name: "Contact", href: "/contact" },
   ]
 
-  const fallbackServices = [
-    { _id: '1', title: 'Interior Fit-out', slug: 'fit-out' },
-    { _id: '2', title: 'General Construction', slug: 'construction' },
-    { _id: '3', title: 'Flooring Solutions', slug: 'flooring' },
-    { _id: '4', title: 'Project Management', slug: 'management' },
-    { _id: '5', title: 'Acoustic Panels', slug: 'acoustic' },
+  const fallbackServices: ServiceCategory[] = [
+    { id: '1', title: 'Interior Fit-out', slug: 'fit-out', shortDescription: '' },
+    { id: '2', title: 'General Construction', slug: 'construction', shortDescription: '' },
+    { id: '3', title: 'Flooring Solutions', slug: 'flooring', shortDescription: '' },
+    { id: '4', title: 'Project Management', slug: 'management', shortDescription: '' },
+    { id: '5', title: 'Acoustic Panels', slug: 'acoustic', shortDescription: '' },
   ]
 
-  const fallbackSettings = {
+  const fallbackSettings: SiteSettings = {
+    id: 'settings-1',
     companyTagline: 'Pioneering excellence in construction and interior fit-outs across the Middle East.',
     address: 'Dubai, United Arab Emirates',
     phone: '+971 4 000 0000',
     email: 'info@maqam-alemaar.com',
+    linkedinUrl: 'https://linkedin.com',
   }
 
-  const displayServices = services && services.length > 0 ? services : fallbackServices
-  const displaySettings = settings || fallbackSettings
+  const displayServices = dummyServiceCategories.length > 0 ? dummyServiceCategories : fallbackServices
+  const displaySettings = fallbackSettings
 
   return (
     <footer className="bg-primary text-white pt-20 pb-10">
@@ -100,7 +97,7 @@ export default async function Footer() {
             </h4>
             <ul className="flex flex-col gap-4">
               {displayServices.slice(0, 5).map((service) => (
-                <li key={service._id}>
+                <li key={service.id}>
                   <Link
                     href={`/services/${service.slug}`}
                     className="text-white/80 hover:text-white transition-colors text-sm font-semibold inline-block"

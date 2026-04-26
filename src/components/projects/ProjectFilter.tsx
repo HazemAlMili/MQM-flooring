@@ -3,7 +3,7 @@
 import { useCallback, useMemo, Suspense } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
 import { AnimatePresence, motion } from "framer-motion"
-import { Project, ServiceCategory } from "@/types/sanity"
+import { Project, ServiceCategory } from "@/types"
 import ProjectCard from "./ProjectCard"
 import { dummyProjects, dummyServiceCategories } from "@/lib/dummyData"
 
@@ -72,7 +72,7 @@ function ProjectFilterInner({ projects, services }: ProjectFilterProps) {
           {filtered.length > 0 ? (
             filtered.map((project, index) => (
               <motion.div
-                key={project._id}
+                key={project.id}
                 layout
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}

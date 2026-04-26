@@ -1,7 +1,5 @@
 import { Metadata } from "next"
-import { client } from "@/sanity/lib/client"
-import { activeJobsQuery, siteSettingsQuery } from "@/sanity/lib/queries"
-import { JobPosting, SiteSettings } from "@/types/sanity"
+import { JobPosting, SiteSettings } from "@/types"
 import PageHero from "@/components/shared/PageHero"
 import JobAccordion from "@/components/careers/JobAccordion"
 import AnimatedSection from "@/components/shared/AnimatedSection"
@@ -19,10 +17,8 @@ export const metadata: Metadata = {
 export const revalidate = 60
 
 export default async function CareersPage() {
-  const [jobs, settings] = await Promise.all([
-    client.fetch<JobPosting[]>(activeJobsQuery),
-    client.fetch<SiteSettings>(siteSettingsQuery),
-  ])
+  const jobs: JobPosting[] = []
+  const settingsEmail = "careers@maqam-alemaar.com"
 
   return (
     <>
@@ -48,8 +44,8 @@ export default async function CareersPage() {
           <div className="space-y-4">
             {jobs && jobs.length > 0 ? (
               jobs.map((job, i) => (
-                <AnimatedSection key={job._id} delay={i * 0.1}>
-                  <JobAccordion job={job} settingsEmail={settings?.email} />
+                <AnimatedSection key={job.id} delay={i * 0.1}>
+                  <JobAccordion job={job} settingsEmail={settingsEmail} />
                 </AnimatedSection>
               ))
             ) : (
@@ -59,10 +55,10 @@ export default async function CareersPage() {
                     No Open Positions Currently
                   </h3>
                   <p className="text-muted-foreground mb-6">
-                    We aren't actively hiring for specific roles right now, but we are always interested in connecting with talented professionals.
+                    We aren&apos;t actively hiring for specific roles right now, but we are always interested in connecting with talented professionals.
                   </p>
                   <a
-                    href={`mailto:${settings?.email || "careers@maqam-alemaar.com"}`}
+                    href={`mailto:${settingsEmail}`}
                     className="inline-flex px-6 py-3 bg-primary text-white font-medium rounded-lg hover:bg-primary-hover transition-colors shadow-btn"
                   >
                     Submit General Application

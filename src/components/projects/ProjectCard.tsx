@@ -4,8 +4,7 @@ import { motion } from "framer-motion"
 import Link from "next/link"
 import Image from "next/image"
 import { MapPin, Calendar } from "lucide-react"
-import { Project } from "@/types/sanity"
-import SanityImage from "@/components/shared/SanityImage"
+import { Project } from "@/types"
 
 interface ProjectCardProps {
   project: Project
@@ -20,10 +19,7 @@ const statusConfig: Record<string, { label: string; class: string }> = {
   "Under Review": { label: "Under Review", class: "bg-surface text-muted-foreground border border-border" },
 }
 
-// Check if the URL is a local path (dummy data) vs Sanity CDN
-function isDummyImage(url?: string) {
-  return url?.startsWith("/") || url?.startsWith("data:")
-}
+// Removed isDummyImage as images are string URLs now
 
 export default function ProjectCard({
   project,
@@ -32,7 +28,7 @@ export default function ProjectCard({
   isLarge = false,
 }: ProjectCardProps) {
   const status = statusConfig[project.projectStatus] ?? statusConfig["Under Review"]
-  const imageUrl = project.coverImage?.asset?.url
+  const imageUrl = project.coverImage || "/og-default.jpg"
 
   return (
     <motion.div
@@ -52,27 +48,14 @@ export default function ProjectCard({
             isLarge ? "h-80 md:h-96" : "h-64 md:h-72"
           }`}
         >
-          {isDummyImage(imageUrl) ? (
-            /* Local / dummy image */
             <Image
-              src={imageUrl || "/og-default.jpg"}
+              src={imageUrl}
               alt={project.title}
               fill
               priority={priority}
               className="object-cover transition-transform duration-700 group-hover:scale-110"
               sizes={isLarge ? "(max-width: 1024px) 100vw, 66vw" : "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"}
             />
-          ) : (
-            /* Sanity CDN image */
-            <SanityImage
-              image={project.coverImage}
-              alt={project.title}
-              fill
-              priority={priority}
-              className="object-cover transition-transform duration-700 group-hover:scale-110"
-              sizes={isLarge ? "(max-width: 1024px) 100vw, 66vw" : "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"}
-            />
-          )}
 
           {/* Gradient overlay */}
           <div className="absolute inset-0 bg-gradient-to-t from-foreground/60 via-foreground/10 to-transparent opacity-50 group-hover:opacity-70 transition-opacity duration-300" />

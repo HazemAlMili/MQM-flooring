@@ -1,7 +1,5 @@
 import { Metadata } from "next"
-import { client } from "@/sanity/lib/client"
-import { allServicesQuery } from "@/sanity/lib/queries"
-import { ServiceCategory } from "@/types/sanity"
+import { ServiceCategory } from "@/types"
 import PageHero from "@/components/shared/PageHero"
 import ServiceCard from "@/components/services/ServiceCard"
 import AnimatedSection from "@/components/shared/AnimatedSection"
@@ -20,10 +18,7 @@ export const metadata: Metadata = {
 export const revalidate = 60
 
 export default async function ServicesPage() {
-  const services = await client.fetch<ServiceCategory[]>(allServicesQuery)
-  
-  // TODO: Remove dummy fallback once Sanity is populated
-  const displayServices = services && services.length > 0 ? services : dummyServiceCategories
+  const displayServices = dummyServiceCategories
 
   return (
     <>
@@ -37,7 +32,7 @@ export default async function ServicesPage() {
         <div className="container mx-auto px-4 md:px-6">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
             {displayServices.map((service, i) => (
-              <AnimatedSection key={service._id} delay={i * 0.1}>
+              <AnimatedSection key={service.id} delay={i * 0.1}>
                 <ServiceCard service={service} index={i} />
               </AnimatedSection>
             ))}

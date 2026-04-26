@@ -1,6 +1,6 @@
 import Link from "next/link"
 import { ArrowRight } from "lucide-react"
-import { Project } from "@/types/sanity"
+import { Project } from "@/types"
 import ProjectCard from "@/components/projects/ProjectCard"
 import { dummyProjects } from "@/lib/dummyData"
 import AnimatedSection from "@/components/shared/AnimatedSection"
@@ -52,7 +52,7 @@ export default function FeaturedProjects({ projects }: FeaturedProjectsProps) {
           {/* Two stacked cards */}
           <div className="flex flex-col gap-6">
             {small.slice(0, 2).map((project, i) => (
-              <AnimatedSection key={project._id} delay={0.1 + i * 0.1}>
+              <AnimatedSection key={project.id} delay={0.1 + i * 0.1}>
                 <ProjectCard project={project} />
               </AnimatedSection>
             ))}

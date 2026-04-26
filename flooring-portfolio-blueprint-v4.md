@@ -1,6 +1,6 @@
 # Maqam Al-Emaar — Portfolio Website Blueprint v4
 **مقام الإعمار | Maqam Al-Emaar**
-**Stack:** Next.js 14 (App Router) · Tailwind CSS · Shadcn UI · Framer Motion · Sanity.io v3 · Vercel
+**Stack:** Next.js 14 (App Router) · Tailwind CSS · Shadcn UI · Framer Motion · Local Static Data · Vercel
 **Informed by:** Deep competitive analysis of clc-sa.com
 
 ---
@@ -15,7 +15,7 @@ The Maqam Al-Emaar logo is a geometric Arabic calligraphy mark — a diamond-sha
 - **Footer:** White version on the brand-blue footer background
 - **Favicon:** The diamond mark only, rendered at 32×32 and 180×180 (Apple touch icon)
 - **OG image:** Logo centred on a `#2999CA` background
-- **Sanity Studio:** Upload both the white PNG and the black PNG versions as assets in `siteSettings`
+- **Local Dummy Data:** Assets are stored in `public/` and referenced in `src/lib/dummyData.ts`
 
 ### Color Palette
 
@@ -51,13 +51,13 @@ Clean, efficient, professional. Entrances use a quick upward fade (400ms, `ease-
 |---|---|
 | Long-scroll homepage with anchor nav | Single narrative landing page, sticky nav with anchor links |
 | Project cards → dedicated project detail page | `/projects/[slug]` with SSG |
-| Project detail: contract type, area, status, year, client name | All fields in Sanity `project` schema |
+| Project detail: contract type, area, status, year, client name | All fields in `dummyData` `Project` schema |
 | Partner/client logo strip | `ClientLogoMarquee` with CSS infinite scroll |
-| Three service categories | `serviceCategory` Sanity document; each → `/services/[slug]` |
-| Company profile PDF download | `siteSettings.companyProfilePdf` asset field |
-| "Join Us" / Careers in nav | `/careers` route + `jobPosting` schema |
+| Three service categories | Local static constant; each → `/services/[slug]` |
+| Company profile PDF download | Local asset reference |
+| "Join Us" / Careers in nav | `/careers` route + local jobs array |
 | Contact page with address, phone, email + form | Full contact page + server-side form handler |
-| Sister company external link | `siteSettings.sisterCompanyUrl` field |
+| Sister company external link | Static setting in `dummyData.ts` |
 
 ### What We Do Better
 
@@ -72,9 +72,9 @@ Clean, efficient, professional. Entrances use a quick upward fade (400ms, `ease-
 | No stats bar | Animated counters: Years · Projects · m² · Countries |
 | No scroll animations | Framer Motion reveals, Ken Burns hero, card lifts |
 | About section = wall of text | Shadcn `Tabs`: Company / Vision / Values / HSE |
-| Broken project images | Sanity CDN + `next/image` with LQIP blur-up |
+| Broken project images | Local assets via `next/image` with LQIP blur-up |
 | No per-page SEO | `generateMetadata()` + JSON-LD per page |
-| No sitemap / robots.txt | Auto-generated from Sanity data |
+| No sitemap / robots.txt | Auto-generated from local data |
 | Dated mobile nav | Full-screen animated mobile menu overlay |
 | No form validation | React Hook Form + Zod + inline errors |
 | Minimal footer | 3-column footer with logo, links, contact info |
@@ -90,8 +90,6 @@ maqam-al-emaar/
 ├── next.config.ts
 ├── tailwind.config.ts
 ├── tsconfig.json
-├── sanity.config.ts
-├── sanity.cli.ts
 │
 ├── public/
 │   ├── fonts/                          # JetBrains Mono only (Cairo + Inter via next/font/google)
@@ -120,9 +118,7 @@ maqam-al-emaar/
 │   │   ├── careers/page.tsx
 │   │   ├── contact/page.tsx
 │   │   ├── api/
-│   │   │   ├── contact/route.ts
-│   │   │   └── revalidate/route.ts
-│   │   ├── admin/[[...tool]]/page.tsx
+│   │   │   └── contact/route.ts
 │   │   ├── sitemap.ts
 │   │   ├── robots.ts
 │   │   └── not-found.tsx
@@ -159,24 +155,9 @@ maqam-al-emaar/
 │   │   ├── ui/                         # Shadcn (auto-generated)
 │   │   └── shared/
 │   │       ├── AnimatedSection.tsx     # CLIENT
-│   │       ├── SanityImage.tsx         # SERVER
-│   │       ├── PortableTextRenderer.tsx # CLIENT
 │   │       ├── PageHero.tsx            # SERVER — blue bg, white text
 │   │       └── Logo.tsx               # SERVER — renders correct logo variant by prop
 │   │
-│   ├── sanity/
-│   │   ├── schemaTypes/
-│   │   │   ├── index.ts
-│   │   │   ├── project.ts
-│   │   │   ├── serviceCategory.ts
-│   │   │   ├── partnerLogo.ts
-│   │   │   ├── jobPosting.ts
-│   │   │   └── siteSettings.ts
-│   │   ├── lib/
-│   │   │   ├── client.ts
-│   │   │   ├── queries.ts
-│   │   │   └── image.ts
-│   │   └── structure.ts
 │   │
 │   ├── hooks/
 │   │   ├── useScrollReveal.ts
@@ -185,9 +166,7 @@ maqam-al-emaar/
 │   │   ├── utils.ts
 │   │   └── metadata.ts
 │   └── types/
-│       ├── project.ts
-│       ├── service.ts
-│       └── sanity.ts
+│       ├── index.ts
 ```
 
 ---

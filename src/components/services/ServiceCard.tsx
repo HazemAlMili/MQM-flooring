@@ -1,7 +1,7 @@
 import Link from "next/link"
 import { Building2, Zap, ShieldCheck, ArrowRight } from "lucide-react"
-import { ServiceCategory } from "@/types/sanity"
-import SanityImage from "@/components/shared/SanityImage"
+import { ServiceCategory } from "@/types"
+import Image from "next/image"
 
 interface ServiceCardProps {
   service: ServiceCategory
@@ -20,7 +20,7 @@ function getIcon(name?: string) {
 }
 
 export default function ServiceCard({ service }: ServiceCardProps) {
-  const IconComponent = getIcon(service.icon)
+  const Icon = getIcon(service.icon)
 
   return (
     <Link
@@ -30,8 +30,8 @@ export default function ServiceCard({ service }: ServiceCardProps) {
       {/* Cover image */}
       <div className="relative h-52 w-full overflow-hidden bg-surface">
         {service.coverImage ? (
-          <SanityImage
-            image={service.coverImage}
+          <Image
+            src={service.coverImage}
             alt={service.title}
             fill
             className="object-cover transition-transform duration-700 group-hover:scale-110"
@@ -39,7 +39,7 @@ export default function ServiceCard({ service }: ServiceCardProps) {
           />
         ) : (
           <div className="absolute inset-0 flex items-center justify-center bg-primary-wash">
-            <IconComponent className="w-10 h-10 text-primary/40" />
+            <Icon className="w-10 h-10 text-primary/40" />
           </div>
         )}
         <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
@@ -49,7 +49,7 @@ export default function ServiceCard({ service }: ServiceCardProps) {
       <div className="p-7">
         {/* Icon circle */}
         <div className="w-11 h-11 bg-primary/10 rounded-xl flex items-center justify-center mb-5 group-hover:bg-primary transition-colors duration-300">
-          <IconComponent className="w-5 h-5 text-primary group-hover:text-white transition-colors duration-300" />
+          <Icon className="w-5 h-5 text-primary group-hover:text-white transition-colors duration-300" />
         </div>
 
         <h3

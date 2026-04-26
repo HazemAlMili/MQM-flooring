@@ -1,4 +1,4 @@
-import { Project } from "@/types/sanity"
+import { Project } from "@/types"
 import { Calendar, MapPin, Building2, Ruler, User, ClipboardList } from "lucide-react"
 
 interface ProjectMetaProps {
@@ -19,7 +19,7 @@ function MetaRow({
 }: { 
   label: string; 
   value?: string | number | null;
-  icon: any;
+  icon: React.ElementType;
   labelAr?: string
 }) {
   if (!value) return null

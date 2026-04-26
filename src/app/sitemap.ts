@@ -1,15 +1,12 @@
 import { MetadataRoute } from "next"
-import { client } from "@/sanity/lib/client"
-import { allProjectSlugsQuery, allServiceSlugsQuery } from "@/sanity/lib/queries"
+import { dummyProjects, dummyServiceCategories } from "@/lib/dummyData"
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://mqmflooring.com"
 
   // Fetch dynamic slugs
-  const [projectSlugs, serviceSlugs] = await Promise.all([
-    client.fetch<{ slug: string }[]>(allProjectSlugsQuery),
-    client.fetch<{ slug: string }[]>(allServiceSlugsQuery),
-  ])
+  const projectSlugs = dummyProjects.map(p => ({ slug: p.slug }))
+  const serviceSlugs = dummyServiceCategories.map(s => ({ slug: s.slug }))
 
   // Core static routes
   const staticRoutes: MetadataRoute.Sitemap = [

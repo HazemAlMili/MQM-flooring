@@ -1,21 +1,10 @@
 import Link from "next/link"
-import { client } from "@/sanity/lib/client"
-import { featuredProjectsQuery } from "@/sanity/lib/queries"
-import { Project } from "@/types/sanity"
+import { Project } from "@/types"
 import ProjectCard from "@/components/projects/ProjectCard"
 import { dummyProjects } from "@/lib/dummyData"
 
 export default async function NotFound() {
-  let featuredProjects: Project[] = []
-  try {
-    const projects = await client.fetch<Project[]>(featuredProjectsQuery)
-    featuredProjects = projects ? projects.slice(0, 3) : []
-  } catch (error) {
-    console.error("Failed to fetch featured projects for 404 page", error)
-  }
-
-  // TODO: Remove dummy fallback once Sanity is populated
-  const displayProjects = featuredProjects.length > 0 ? featuredProjects : dummyProjects.slice(0, 3)
+  const displayProjects = dummyProjects.slice(0, 3)
 
   return (
     <div className="pt-32 pb-20 md:py-40 min-h-[80vh] flex flex-col justify-center bg-primary-wash">
@@ -34,8 +23,8 @@ export default async function NotFound() {
           الصفحة غير موجودة / Page Not Found
         </h2>
         <p className="text-muted-foreground text-lg max-w-lg mx-auto mb-10 leading-relaxed">
-          The page you are looking for doesn't exist or has been moved. 
-          Let's get you back on track to exploring our premium spaces.
+          The page you are looking for doesn&apos;t exist or has been moved. 
+          Let&apos;s get you back on track to exploring our premium spaces.
         </p>
         
         <Link 
@@ -56,7 +45,7 @@ export default async function NotFound() {
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {displayProjects.map((project) => (
-                <ProjectCard key={project._id} project={project} />
+                <ProjectCard key={project.id} project={project} />
               ))}
             </div>
           </div>

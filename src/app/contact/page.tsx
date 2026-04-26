@@ -1,7 +1,5 @@
 import { Metadata } from "next"
-import { client } from "@/sanity/lib/client"
-import { siteSettingsQuery } from "@/sanity/lib/queries"
-import { SiteSettings } from "@/types/sanity"
+import { SiteSettings } from "@/types"
 import { MapPin, Phone, Mail, Clock } from "lucide-react"
 import PageHero from "@/components/shared/PageHero"
 import ContactForm from "@/components/contact/ContactForm"
@@ -21,7 +19,11 @@ export const metadata: Metadata = {
 export const revalidate = 60
 
 export default async function ContactPage() {
-  const settings = await client.fetch<SiteSettings>(siteSettingsQuery)
+  const settings: SiteSettings | null = {
+    address: 'Dubai, United Arab Emirates',
+    phone: '+971 4 000 0000',
+    email: 'info@maqam-alemaar.com',
+  } as SiteSettings
 
   return (
     <>

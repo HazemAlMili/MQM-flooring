@@ -69,7 +69,7 @@ export default function RootLayout({
         <link rel="preconnect" href="https://cdn.sanity.io" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
       </head>
-      <body className="antialiased min-h-screen bg-background text-foreground flex flex-col">
+      <body className="antialiased min-h-screen bg-background text-foreground flex flex-col" suppressHydrationWarning>
         {/* Global JSON-LD */}
         <script
           type="application/ld+json"

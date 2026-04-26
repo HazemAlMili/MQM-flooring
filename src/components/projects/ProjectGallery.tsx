@@ -4,11 +4,10 @@ import { useState, useEffect, useCallback } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { Dialog, DialogContent } from "@/components/ui/dialog"
 import { X, ChevronLeft, ChevronRight } from "lucide-react"
-import { SanityImage as SanityImageType } from "@/types/sanity"
-import SanityImage from "@/components/shared/SanityImage"
+import Image from "next/image"
 
 interface ProjectGalleryProps {
-  images: SanityImageType[]
+  images: string[]
 }
 
 export default function ProjectGallery({ images }: ProjectGalleryProps) {
@@ -69,9 +68,9 @@ export default function ProjectGallery({ images }: ProjectGalleryProps) {
             className="relative aspect-[4/3] overflow-hidden rounded-xl bg-secondary hover:ring-4 hover:ring-primary/20 transition-all duration-300 group shadow-sm hover:shadow-xl"
             aria-label={`Open gallery image ${i + 1}`}
           >
-            <SanityImage
-              image={img}
-              alt={img.alt || `Gallery image ${i + 1}`}
+            <Image
+              src={img}
+              alt={`Gallery image ${i + 1}`}
               fill
               className="object-cover transition-transform duration-700 group-hover:scale-110"
               sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
@@ -118,9 +117,9 @@ export default function ProjectGallery({ images }: ProjectGalleryProps) {
                 transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
                 className="relative w-full max-w-6xl h-full flex items-center justify-center"
               >
-                <SanityImage
-                  image={images[activeIndex]}
-                  alt={images[activeIndex].alt || `Image ${activeIndex + 1}`}
+                <Image
+                  src={images[activeIndex]}
+                  alt={`Image ${activeIndex + 1}`}
                   fill
                   priority
                   className="object-contain drop-shadow-2xl"

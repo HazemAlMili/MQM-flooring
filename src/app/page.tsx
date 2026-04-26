@@ -1,6 +1,4 @@
-import { client } from "@/sanity/lib/client"
-import { siteSettingsQuery } from "@/sanity/lib/queries"
-import { SiteSettings } from "@/types/sanity"
+import { SiteSettings } from "@/types"
 import Link from "next/link"
 import Image from "next/image"
 import PageHero from "@/components/shared/PageHero"
@@ -10,13 +8,12 @@ import { ArrowRight } from "lucide-react"
 export const revalidate = 60
 
 export default async function Home() {
-  const settings = await client.fetch<SiteSettings>(siteSettingsQuery)
 
   return (
     <>
       <PageHero
         title="Maqam Al-Emaar"
-        subtitle={settings?.companyTagline || "Pioneering excellence in construction and interior fit-outs across the Middle East."}
+        subtitle="Pioneering excellence in construction and interior fit-outs across the Middle East."
         breadcrumb="Home"
       />
 

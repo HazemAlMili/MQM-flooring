@@ -5,8 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion } from "framer-motion";
 import { Menu, FileText, ExternalLink } from "lucide-react";
-import { SiteSettings } from "@/types/sanity";
-import { urlFor } from "@/sanity/lib/image";
+import { SiteSettings } from "@/types";
 import MobileMenu from "./MobileMenu";
 import Image from "next/image";
 

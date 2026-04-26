@@ -34,7 +34,7 @@ export default function CtaBanner() {
         </h3>
         <p className="text-white/70 max-w-xl mx-auto mb-10 text-lg leading-relaxed">
           Our team is ready to deliver excellence — from planning through to handover.
-          Let's build something remarkable together.
+          Let&apos;s build something remarkable together.
         </p>
 
         <Link

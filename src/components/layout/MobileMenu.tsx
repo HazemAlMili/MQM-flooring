@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { X } from "lucide-react";
-import { SiteSettings } from "@/types/sanity";
+import { SiteSettings } from "@/types";
 import Image from "next/image";
 
 interface MobileMenuProps {

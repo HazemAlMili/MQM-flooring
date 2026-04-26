@@ -1,10 +1,8 @@
-import { client } from "@/sanity/lib/client"
-import { siteSettingsQuery } from "@/sanity/lib/queries"
-import { SiteSettings } from "@/types/sanity"
+import { SiteSettings } from "@/types"
 import NavClient from "./NavClient"
 
 export default async function Navbar() {
-  const settings = await client.fetch<SiteSettings>(siteSettingsQuery)
+  const settings: SiteSettings | null = null
 
   return <NavClient settings={settings} />
 }

@@ -1,8 +1,7 @@
 import { CheckCircle } from "lucide-react"
-import { ServiceCategory } from "@/types/sanity"
-import SanityImage from "@/components/shared/SanityImage"
+import { ServiceCategory } from "@/types"
+import Image from "next/image"
 import AnimatedSection from "@/components/shared/AnimatedSection"
-import PortableTextRenderer from "@/components/shared/PortableTextRenderer"
 
 interface ServiceDetailProps {
   service: ServiceCategory
@@ -16,8 +15,8 @@ export default function ServiceDetail({ service }: ServiceDetailProps) {
         <AnimatedSection>
           {service.coverImage && (
             <div className="relative h-[400px] md:h-[500px] w-full mb-12 rounded-xl overflow-hidden shadow-card">
-              <SanityImage
-                image={service.coverImage}
+              <Image
+                src={service.coverImage}
                 alt={service.title}
                 fill
                 className="object-cover"
@@ -28,7 +27,7 @@ export default function ServiceDetail({ service }: ServiceDetailProps) {
 
           <div className="prose prose-slate max-w-none">
             {service.fullDescription ? (
-              <PortableTextRenderer value={service.fullDescription} />
+              <div dangerouslySetInnerHTML={{ __html: service.fullDescription }} />
             ) : (
               <p className="text-muted-foreground text-lg leading-relaxed">
                 Detailed description coming soon.

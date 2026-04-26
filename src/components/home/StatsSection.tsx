@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react"
 import { useInView, useSpring } from "framer-motion"
-import { SiteSettings } from "@/types/sanity"
+import { SiteSettings } from "@/types"
 
 interface StatsSectionProps {
   settings: SiteSettings | null

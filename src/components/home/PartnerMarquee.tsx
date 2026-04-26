@@ -1,7 +1,7 @@
 "use client"
 
-import { PartnerLogo } from "@/types/sanity"
-import SanityImage from "@/components/shared/SanityImage"
+import { PartnerLogo } from "@/types"
+import Image from "next/image"
 
 interface PartnerMarqueeProps {
   logos: PartnerLogo[]
@@ -28,12 +28,12 @@ export default function PartnerMarquee({ logos }: PartnerMarqueeProps) {
         <div className="flex w-max animate-marquee space-x-12 px-6">
           {duplicatedLogos.map((partner, index) => (
             <div
-              key={`${partner._id}-${index}`}
+              key={`${partner.id}-${index}`}
               className="flex items-center justify-center min-w-[120px] max-w-[180px]"
             >
               <div className="relative w-full h-14 grayscale opacity-50 hover:grayscale-0 hover:opacity-100 transition-all duration-300">
-                <SanityImage
-                  image={partner.logo}
+                <Image
+                  src={partner.logo}
                   alt={partner.name}
                   fill
                   className="object-contain"
@@ -52,12 +52,12 @@ export default function PartnerMarquee({ logos }: PartnerMarqueeProps) {
         >
           {duplicatedLogos.map((partner, index) => (
             <div
-              key={`dup-${partner._id}-${index}`}
+              key={`dup-${partner.id}-${index}`}
               className="flex items-center justify-center min-w-[120px] max-w-[180px]"
             >
               <div className="relative w-full h-14 grayscale opacity-50 hover:grayscale-0 hover:opacity-100 transition-all duration-300">
-                <SanityImage
-                  image={partner.logo}
+                <Image
+                  src={partner.logo}
                   alt={partner.name}
                   fill
                   className="object-contain"

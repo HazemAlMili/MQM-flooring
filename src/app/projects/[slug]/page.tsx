@@ -1,14 +1,11 @@
 import { Metadata } from "next"
 import { notFound } from "next/navigation"
 import Link from "next/link"
-import { client } from "@/sanity/lib/client"
-import { projectBySlugQuery, allProjectSlugsQuery } from "@/sanity/lib/queries"
-import { Project } from "@/types/sanity"
+import { Project } from "@/types"
 import { ArrowLeft, ArrowRight, Share2 } from "lucide-react"
 import ProjectHero from "@/components/projects/ProjectHero"
 import ProjectMeta from "@/components/projects/ProjectMeta"
 import ProjectGallery from "@/components/projects/ProjectGallery"
-import PortableTextRenderer from "@/components/shared/PortableTextRenderer"
 import AnimatedSection from "@/components/shared/AnimatedSection"
 import { dummyProjects } from "@/lib/dummyData"
 
@@ -19,18 +16,13 @@ interface Props {
 }
 
 export async function generateStaticParams() {
-  const slugs = await client.fetch<{ slug: string }[]>(allProjectSlugsQuery)
   const dummySlugs = dummyProjects.map(p => ({ slug: p.slug }))
-  return [...slugs, ...dummySlugs]
+  return dummySlugs
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const resolvedParams = await params
-  let project = await client.fetch<Project>(projectBySlugQuery, { slug: resolvedParams.slug })
-  
-  if (!project) {
-    project = dummyProjects.find(p => p.slug === resolvedParams.slug) as Project
-  }
+  const project = dummyProjects.find(p => p.slug === resolvedParams.slug) as Project
 
   if (!project) return { title: "Not Found" }
 
@@ -39,24 +31,19 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     description: project.seoDescription ?? project.summary,
     openGraph: {
       title: project.seoTitle ?? project.title,
-      description: project.seoDescription ?? project.summary ?? "",
-      images: project.coverImage?.asset?.url ? [{ url: project.coverImage.asset.url }] : [],
+      images: project.coverImage ? [{ url: project.coverImage }] : [],
     },
   }
 }
 
 export default async function ProjectDetailPage({ params }: Props) {
   const resolvedParams = await params
-  let project = await client.fetch<Project>(projectBySlugQuery, { slug: resolvedParams.slug })
-
-  if (!project) {
-    project = dummyProjects.find(p => p.slug === resolvedParams.slug) as Project
-  }
+  const project = dummyProjects.find(p => p.slug === resolvedParams.slug) as Project
 
   if (!project) notFound()
 
   // Find next project for navigation
-  const allProjects = [...(await client.fetch<Project[]>(allProjectSlugsQuery)), ...dummyProjects]
+  const allProjects = dummyProjects
   const currentIndex = allProjects.findIndex(p => p.slug === resolvedParams.slug)
   const nextProject = allProjects[(currentIndex + 1) % allProjects.length]
 
@@ -65,7 +52,7 @@ export default async function ProjectDetailPage({ params }: Props) {
     "@type": "CreativeWork",
     name: project.title,
     description: project.summary ?? "",
-    image: project.coverImage?.asset?.url ?? "",
+    image: project.coverImage ?? "",
     creator: { "@type": "Organization", name: "Maqam Al-Emaar" },
     dateCreated: project.completionYear ? `${project.completionYear}` : undefined,
   }
@@ -128,7 +115,7 @@ export default async function ProjectDetailPage({ params }: Props) {
 
                 <div className="prose prose-lg max-w-none prose-headings:font-bold prose-headings:text-foreground prose-p:text-muted-foreground prose-p:leading-relaxed prose-strong:text-foreground">
                   {project.description && (
-                    <PortableTextRenderer value={project.description} />
+                    <div dangerouslySetInnerHTML={{ __html: project.description }} />
                   )}
                 </div>
               </AnimatedSection>

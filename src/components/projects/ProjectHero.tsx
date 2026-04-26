@@ -1,8 +1,8 @@
 "use client";
 import { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
-import { Project } from "@/types/sanity";
-import SanityImage from "@/components/shared/SanityImage";
+import { Project } from "@/types";
+import Image from "next/image";
 
 interface ProjectHeroProps {
   project: Project;
@@ -21,8 +21,8 @@ export default function ProjectHero({ project }: ProjectHeroProps) {
       {/* Parallax image */}
       <motion.div className="absolute inset-0" style={{ y }}>
         {project.coverImage ? (
-          <SanityImage
-            image={project.coverImage}
+          <Image
+            src={project.coverImage}
             alt={project.title}
             fill
             priority

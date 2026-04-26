@@ -1,29 +1,7 @@
-import { PortableTextBlock } from '@portabletext/types'
-
-export interface SanityImageAsset {
-  _id: string
-  url: string
-  metadata: {
-    lqip: string
-    dimensions: {
-      width: number
-      height: number
-      aspectRatio: number
-    }
-  }
-}
-
-export interface SanityImage {
-  _type: 'image'
-  asset: SanityImageAsset
-  alt?: string
-  caption?: string
-}
-
 export interface SiteSettings {
-  _id: string
+  id: string
   siteName?: string
-  logo?: SanityImage
+  logo?: string
   companyTagline?: string
   companyProfilePdfUrl?: string
   sisterCompanyName?: string
@@ -41,29 +19,29 @@ export interface SiteSettings {
 }
 
 export interface PartnerLogo {
-  _id: string
+  id: string
   name: string
   websiteUrl?: string
-  logo: SanityImage
+  logo: string
 }
 
 export interface ServiceCategory {
-  _id: string
+  id: string
   title: string
   slug: string
   shortDescription?: string
-  fullDescription?: PortableTextBlock[]
+  fullDescription?: string
   icon?: string
   capabilities?: string[]
-  coverImage?: SanityImage
+  coverImage?: string
 }
 
 export interface Project {
-  _id: string
+  id: string
   title: string
   slug: string
   summary?: string
-  description?: PortableTextBlock[]
+  description?: string
   featured?: boolean
   serviceCategory: {
     title: string
@@ -76,19 +54,19 @@ export interface Project {
   location?: string
   totalAreaSqm?: number
   projectValue?: number
-  coverImage: SanityImage
-  gallery?: SanityImage[]
+  coverImage: string
+  gallery?: string[]
   seoTitle?: string
   seoDescription?: string
 }
 
 export interface JobPosting {
-  _id: string
+  id: string
   title: string
   department?: string
   location?: string
   type?: string
-  description?: PortableTextBlock[]
+  description?: string
   isActive: boolean
   postedDate?: string
 }
