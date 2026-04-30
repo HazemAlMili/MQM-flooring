@@ -3,6 +3,8 @@ import Link from "next/link"
 import Image from "next/image"
 import PageHero from "@/components/shared/PageHero"
 import AnimatedSection from "@/components/shared/AnimatedSection"
+import PartnerMarquee from "@/components/home/PartnerMarquee"
+import { dummyPartners } from "@/lib/dummyData"
 import { ArrowRight } from "lucide-react"
 
 export const revalidate = 60
@@ -96,6 +98,8 @@ export default async function Home() {
           </div>
         </div>
       </section>
+
+      <PartnerMarquee logos={dummyPartners} />
 
       {/* CTA */}
       <section className="py-20 bg-white text-foreground border-t border-border/50">

@@ -1,4 +1,4 @@
-import { Project, ServiceCategory } from "@/types"
+import { PartnerLogo, Project, ServiceCategory } from "@/types"
 
 // ─────────────────────────────────────────────────────────────
 // Dummy placeholder data
@@ -125,4 +125,13 @@ export const dummyProjects: Project[] = [
     totalAreaSqm: 72000,
     coverImage: "/og-default.jpg",
   },
+]
+
+export const dummyPartners: PartnerLogo[] = [
+  { id: "partner-1", name: "Partner Alpha", logo: "/logo.svg" },
+  { id: "partner-2", name: "Partner Beta", logo: "/globe.svg" },
+  { id: "partner-3", name: "Partner Gamma", logo: "/window.svg" },
+  { id: "partner-4", name: "Partner Delta", logo: "/file.svg" },
+  { id: "partner-5", name: "Partner Epsilon", logo: "/logo2.svg" },
+  { id: "partner-6", name: "Partner Zeta", logo: "/logo.svg" },
 ]
